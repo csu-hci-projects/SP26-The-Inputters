@@ -1,0 +1,19 @@
+ParticipantNo,NotificationType,TimeStamp, Duration, EventData,,
+1,1,3/28/2025 16:58,18.36918, Notification Clicked: New Customer, ReactionTime: 3.313288,
+1,1,3/28/2025 16:58,18.88409, Notification Clicked: New Customer, ReactionTime: 0.5149059,
+1,1,3/28/2025 16:58,19.20404, Notification Clicked: New Customer, ReactionTime: 0.319952,
+1,1,3/28/2025 16:58,30.20361, Notification Clicked: Cooked, ReactionTime: 0.7104683,
+1,1,3/28/2025 16:58,43, Correct Food: -96902, Ingredients: [Burger Bread Down;Cutlet B;Salad Slice;Tomato Slice;Onion Slice White;Burger Bread Up], Serve Duration: 38.00
+1,1,3/28/2025 16:59,60.66444, Notification Clicked: Coffee cup added, ReactionTime: 3.271835,
+1,1,3/28/2025 16:59,60.99849, Notification Clicked: New Customer, ReactionTime: 0.3340492,
+1,1,3/28/2025 16:59,76.14, Correct Food: -97360, Ingredients: [Dough Ketchup;Basil Leaf Layer;Mushroom Slice Layer;Pepper Green Layer], Serve Duration: 66.11
+1,1,3/28/2025 16:59,79.34725, Notification Clicked: Cooked, ReactionTime: 1.071724,
+1,1,3/28/2025 16:59,92.48, Correct Food: -98598, Ingredients: [CoffeeCup], Serve Duration: 44.46
+1,1,3/28/2025 16:59,107.0659, Notification Clicked: New Customer, ReactionTime: 9.564095,
+1,1,3/28/2025 16:59,107.8731, Notification Clicked: New Customer, ReactionTime: 0.8072128,
+1,1,3/28/2025 17:00,130.18, Correct Food: -97726, Ingredients: [CoffeeCup], Serve Duration: 115.12
+1,1,3/28/2025 17:00,163.004, Burger burnt,,
+1,1,3/28/2025 17:01,186.2957, Notification Clicked: Burnt, ReactionTime: 0.807663,
+1,1,3/28/2025 17:01,189.2471, Notification Clicked: Cooked, ReactionTime: 1.002426,
+1,1,3/28/2025 17:01,204.24, Correct Food: -100340, Ingredients: [Burger Bread Down;Cutlet B;Tomato Slice;Salad Slice;Cheese Slice A;Burger Bread Up], Serve Duration: 106.74
+1,1,3/28/2025 17:01,207.6246, Notification Clicked: Coffee cup added, ReactionTime: 0.752243,

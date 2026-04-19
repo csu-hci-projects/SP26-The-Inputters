@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Ingredient_Base
+  - Ingredient
+  - Coffee_Cup
+  - Ingredient_Cap
+  - Coffee_Pot
+  - Cooking_Status_Object
+  - Coffee_Pour
+  - Drop Region
+  - Global Records
+  - PersistentGO
+  - QDSUISharedThemeColor
+  - QDSUISection
+  - QDSUIIcon
+  - QDSUITooltip
+  - QDSUIToggleButton
+  - QDSUITextSecondaryColor
+  - QDSUISecondaryButton
+  - QDSUIAccentColor
+  - QDSUITextInputField
+  - QDSUIBorderlessButton
+  - QDSUIToggleCheckboxRadio
+  - QDSUIToggleSwitch
+  - QDSUIPrimaryButton
+  - QDSUIDestructiveButton
+  - QDSUIToggleBorderlessButton
+  - Table
+  - grill
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - HiddenMesh
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - Character
+  - MirroredCharacter
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Spatial Awareness
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

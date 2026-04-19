@@ -1,0 +1,18 @@
+ParticipantNo,NotificationType,TimeStamp, Duration, EventData
+1,3,2025-03-28 17:05:55, 7.603509, Notification Clicked: New Customer, ReactionTime: 2.602373
+1,3,2025-03-28 17:06:02, 14.56562, Notification Clicked: New Customer, ReactionTime: 0.6270342
+1,3,2025-03-28 17:06:27, 39.56, Correct Food: -112406, Ingredients: [Dough Ketchup;Mushroom Slice Layer;Olive Black Slice Layer;Pepperoni Layer], Serve Duration: 34.56
+1,3,2025-03-28 17:06:28, 41.00317, Notification Clicked: Cooked, ReactionTime: 10.63653
+1,3,2025-03-28 17:06:28, 41.22646, Notification Clicked: New Customer, ReactionTime: 0.2232895
+1,3,2025-03-28 17:06:34, 47.21067, Notification Clicked: New Customer, ReactionTime: 2.630714
+1,3,2025-03-28 17:06:35, 47.40203, Notification Clicked: Cooked, ReactionTime: 0.1913605
+1,3,2025-03-28 17:06:44, 57.06, Correct Food: -112964, Ingredients: [Burger Bread Down;Cutlet B;Salad Slice;Onion Slice White;Tomato Slice;Burger Bread Up], Serve Duration: 47.03
+1,3,2025-03-28 17:07:11, 83.34, Correct Food: -115580, Ingredients: [CoffeeCup], Serve Duration: 21.26
+1,3,2025-03-28 17:07:13, 85.62313, Notification Clicked: Coffee cup added, ReactionTime: 23.54251
+1,3,2025-03-28 17:07:13, 85.88692, Notification Clicked: New Customer, ReactionTime: 0.2637939
+1,3,2025-03-28 17:07:30, 102.7608, Notification Clicked: New Customer, ReactionTime: 0.5842819
+1,3,2025-03-28 17:07:41, 113.42, Correct Food: -114576, Ingredients: [Dough Ketchup;Basil Leaf Layer;Pepperoni Layer;Olive Black Slice Layer], Serve Duration: 68.84
+1,3,2025-03-28 17:07:42, 115.0815, Notification Clicked: Cooked, ReactionTime: 0.6257629
+1,3,2025-03-28 17:07:53, 125.8158, Burger burnt
+1,3,2025-03-28 17:08:17, 150.0536, Notification Clicked: Burnt, ReactionTime: 24.23778
+1,3,2025-03-28 17:08:49, 181.36, Correct Food: -116144, Ingredients: [Burger Bread Down;Cutlet B;Bacon Slice;Tomato Slice;Onion Slice White;Burger Bread Up], Serve Duration: 92.99

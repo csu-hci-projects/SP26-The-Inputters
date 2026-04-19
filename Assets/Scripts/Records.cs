@@ -1,0 +1,202 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Records : MonoBehaviour
+{
+    [SerializeField] GameObject[] prefabList;       // List of GameObjects that can be spawned
+    [SerializeField] string[] objectTags;
+    [SerializeField] string[] allObjectTags;
+    [SerializeField] GameObject playArea;
+    [SerializeField] GameObject firePrefab;
+    [SerializeField] Material[] cookingStatusEffectsPizza;
+    [SerializeField] Material[] cookingStatusEffectsBurger;
+    [SerializeField] Material[] selectablePizzaIngredientsMaterial;
+    [SerializeField] Material[] selectableBurgerIngredientsMaterial;
+    [SerializeField] GameObject[] notificationPrefabs;
+    [SerializeField] int notificationType;
+    [SerializeField] GameObject notificationSetManager;
+
+    public GameObject scoreboard;
+    public float score;
+    GameObject persistentGO;
+    /* 
+     * Notification Types:
+     * 0. Notification on the Object(NoO)
+     * 1. Notification in the Viewport(NoV)
+     * 2. Notification on the Dock(NoD)
+     * 3. No Notification
+     * 4. Instructions Scene
+     */
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        persistentGO = GameObject.FindGameObjectsWithTag("PersistentGO")[0];
+        persistentGO.GetComponent<PersistentGOManager>().SetCurrGlobalRecordsGO(transform.gameObject);
+    }
+
+    public GameObject[] GetPrefabList()
+    {
+        return prefabList;
+    }
+
+    public string[] GetObjectTags()
+    {
+        return objectTags;
+    }
+
+    public string[] GetAllObjectTags()
+    {
+        return allObjectTags;
+    }
+
+    public GameObject GetPlayArea()
+    {
+        return playArea;
+    }
+
+    public void SetCookingStatusEffects(int x, GameObject cookingStatusObject, string foodItem)
+    {
+        if (foodItem.Equals("Burger"))
+        {
+            cookingStatusObject.GetComponent<Renderer>().material = cookingStatusEffectsBurger[x];
+        }
+        else if (foodItem.Equals("Pizza"))
+        {
+            cookingStatusObject.GetComponent<Renderer>().material = cookingStatusEffectsPizza[x];
+        }
+    }
+
+    public GameObject GetFirePrefab()
+    {
+        return firePrefab;
+    }
+
+    public Material GetPizzaIngredientMaterial(string x)
+    {
+        return selectablePizzaIngredientsMaterial[IngredientMaterialIndex(x)];
+    }
+
+    public Material GetBurgerIngredientMaterial(string x)
+    {
+        int index = IngredientMaterialIndex(x);
+       // Debug.Log($"[Records] Requested ingredient: {x}, Index: {index}, Array size: {selectableBurgerIngredientsMaterial.Length}");
+
+        if (index < 0 || index >= selectableBurgerIngredientsMaterial.Length)
+        {
+            Debug.LogError($"[Records] ERROR: Index {index} is out of bounds for selectableBurgerIngredientsMaterial (size: {selectableBurgerIngredientsMaterial.Length})!");
+            return null;  // Or return a default material
+        }
+
+        return selectableBurgerIngredientsMaterial[index];
+        //return selectableBurgerIngredientsMaterial[IngredientMaterialIndex(x)];
+    }
+
+    int IngredientMaterialIndex(string ingredient)
+    {
+       // Debug.Log($"[Records] Searching for ingredient: {ingredient}");
+        switch (ingredient)
+        {
+            // Pizza
+            case "Dough Ketchup":
+                return 0;
+            case "Pepperoni Layer":
+                return 1;
+            case "Pepper Green Layer":
+                return 2;
+            case "Olive Black Slice Layer":
+                return 3;
+            case "Mushroom Slice Layer":
+                return 4;
+            case "Basil Leaf Layer":
+                return 5;
+            // Burger
+            case "Burger Bread Down":
+                return 0;
+            case "Burger Bread Up":
+                return 1;
+            case "Cutlet B":
+                return 2;
+            case "Bacon Slice":
+                return 3;
+            case "Cheese Slice A":
+                return 4;
+            case "Onion Slice White":
+                return 5;
+            case "Tomato Slice":
+                return 6;
+            case "Salad Slice":
+                return 7;
+            default:
+                //Debug.LogError($"[Records] ERROR: Ingredient '{ingredient}' not found in switch statement!");
+                return -1;
+        }
+    }
+
+    public GameObject GetPersistentGO()
+    {
+        return persistentGO;
+    }
+
+    public GameObject[] GetAllNotificationPrefabs()
+    {
+        return notificationPrefabs;
+    }
+
+    public GameObject GetNotificationPrefab()
+    {
+        return notificationSetManager.GetComponent<NotificationSetManager>().GetNotificationPrefab();
+    }
+
+    public void SetNotificationType(int x)
+    {
+        notificationType = x;
+        notificationSetManager.GetComponent<NotificationSetManager>().SetNotificationType(x);
+    }
+
+    public int GetNotificationType()
+    {
+        return notificationSetManager.GetComponent<NotificationSetManager>().GetNotificationType();
+    }
+
+    public GameObject AddNotificationOnObject(string stationTxt, string notificationTxt, int objectId)
+    {
+        persistentGO.GetComponent<PersistentGOManager>().AddData("Notification", stationTxt + ":" + notificationTxt + ":" + objectId.ToString(), 1);
+        return notificationSetManager.GetComponent<NotificationSetManager>().AddNotificationOnObject(objectId);
+    }
+
+    public void AddNotificationOnDock(string stationTxt, string notificationTxt, int objectId)
+    {
+        persistentGO.GetComponent<PersistentGOManager>().AddData("Notification", stationTxt + ":" + notificationTxt + ":" + objectId.ToString(), 1);
+        notificationSetManager.GetComponent<NotificationSetManager>().AddNotificationOnDock(stationTxt, notificationTxt, objectId);
+    }
+
+    public void RemoveNotificationOnDock(GameObject cutletGO)
+    {
+        notificationSetManager.GetComponent<NotificationSetManager>().RemoveNotificationOnDock(cutletGO);
+    }
+
+
+    public void AddNotificationOnViewport(string stationTxt, string notificationTxt, int objectId)
+    {
+        persistentGO.GetComponent<PersistentGOManager>().AddData("Notification", stationTxt + ":" + notificationTxt + ":" + objectId.ToString(), 1);
+        notificationSetManager.GetComponent<NotificationSetManager>().AddNotificationOnViewport(stationTxt, notificationTxt, objectId);
+    }
+
+    public void RemoveNotificationViewport(GameObject notificationGO)
+    {
+        notificationSetManager.GetComponent<NotificationSetManager>().RemoveNotificationOnViewport(notificationGO);
+    }
+
+    public void AddNotificationBoth(string stationTxt, string notificationTxt, int objectId)
+    {
+        persistentGO.GetComponent<PersistentGOManager>().AddData("Notification", stationTxt + ":" + notificationTxt + ":" + objectId.ToString(), 1);
+        notificationSetManager.GetComponent<NotificationSetManager>().AddNotificationGazeDock(stationTxt, notificationTxt, objectId);
+    }
+    public void RemoveNotificationBoth(GameObject notificationGO)
+    {
+        notificationSetManager.GetComponent<NotificationSetManager>().RemoveNotificationOnDock(notificationGO);
+        notificationSetManager.GetComponent<NotificationSetManager>().RemoveNotificationOnViewport(notificationGO);
+    }
+}
