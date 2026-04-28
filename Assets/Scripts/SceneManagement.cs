@@ -7,14 +7,12 @@ using UnityEngine.SceneManagement;
 public class SceneManagement : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown participantDropdown;
-    [SerializeField] private TMP_Dropdown sceneDropdown;
+    [SerializeField] private string gameSceneName = "NoD";
     private string selectedParticipant;
-    private string selectedScene;
 
     void Start()
     {
         participantDropdown.onValueChanged.AddListener(delegate { UpdateParticipant(); });
-        sceneDropdown.onValueChanged.AddListener(delegate { UpdateScene(); });
     }
 
     void UpdateParticipant()
@@ -22,23 +20,18 @@ public class SceneManagement : MonoBehaviour
         selectedParticipant = participantDropdown.options[participantDropdown.value].text;
     }
 
-    void UpdateScene()
-    {
-        selectedScene = sceneDropdown.options[sceneDropdown.value].text;
-    }
-
     public void StartExperiment()
     {
-        if (string.IsNullOrEmpty(selectedParticipant) || string.IsNullOrEmpty(selectedScene))
+        if (string.IsNullOrEmpty(selectedParticipant))
         {
-            Debug.LogWarning("Lütfen hem participant hem de scene seçin!");
+            Debug.LogWarning("Please select a participant number.");
             return;
         }
 
         PlayerPrefs.SetString("ParticipantNo", selectedParticipant);
-        PlayerPrefs.SetString("NotificationType", selectedScene);
+        PlayerPrefs.SetString("NotificationType", gameSceneName);
 
-        Debug.Log($"Starting scene: {selectedScene} for Participant {selectedParticipant}");
-        SceneManager.LoadScene(selectedScene);
+        Debug.Log($"Starting scene: {gameSceneName} for Participant {selectedParticipant}");
+        SceneManager.LoadScene(gameSceneName);
     }
 }

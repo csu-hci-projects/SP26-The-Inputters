@@ -14,16 +14,16 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/NoD Scene.unity
     guid: e117557af2ec725428ada48f96732aaa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NoO.unity
     guid: 8a5068513349d424a9439f540544f1e0
   - enabled: 0
     path: Assets/Scenes/NoV Scene.unity
     guid: 706813e6043b6024fb8573abf7a695e1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NoGD.unity
     guid: d1c1ba7e32093eb409caa36cf5b9614e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NoG.unity
     guid: 52222e7cb58a762458a8be156b8610b2
   - enabled: 1

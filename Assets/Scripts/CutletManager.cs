@@ -23,10 +23,7 @@ public class CutletManager : MonoBehaviour
     {
         if (globalRecords_GO != null)
         {
-            if (globalRecords_GO.GetComponent<Records>().GetNotificationType().Equals(1))
-                globalRecords_GO.GetComponent<Records>().RemoveNotificationOnDock(transform.gameObject);
-           // if (globalRecords_GO.GetComponent<Records>().GetNotificationType().Equals(2))
-               // globalRecords_GO.GetComponent<Records>().RemoveNotificationViewport(transform.gameObject);
+            globalRecords_GO.GetComponent<Records>().RemoveNotificationOnDock(transform.gameObject);
         }
 
       //  Debug.Log("Destroying Notification: " + notification_GO.name);
@@ -61,28 +58,7 @@ public class CutletManager : MonoBehaviour
 
                 if (globalRecords_GO.GetComponent<Records>().GetPersistentGO().GetComponent<PersistentGOManager>().GetShowNotification())
                 {
-                    switch (globalRecords_GO.GetComponent<Records>().GetNotificationType())
-                    {
-
-                        case 0:
-                            if (notification_GO != null)
-                            Destroy(notification_GO); // Destroy any previous notification
-                            notification_GO = globalRecords_GO.GetComponent<Records>().AddNotificationOnObject("Burger", notifiText, transform.GetInstanceID());
-                            notification_GO.GetComponent<NotificationManager>().SetNotificationProperties("Burger", notifiText, transform.parent.gameObject,
-                                new Vector3(0, 5f, 0), Quaternion.identity, new Vector3(121, 121f, 40), cutletGameObject: transform.gameObject);
-                            break;
-
-                        case 1:
-                            globalRecords_GO.GetComponent<Records>().AddNotificationOnDock("Burger", notifiText, transform.GetInstanceID());
-                            break;
-
-                        case 2:
-                            globalRecords_GO.GetComponent<Records>().AddNotificationOnViewport("Burger", notifiText, transform.GetInstanceID());
-                            break;
-                        case 3:
-                            globalRecords_GO.GetComponent<Records>().AddNotificationBoth("Burger", notifiText, transform.GetInstanceID());
-                            break;
-                    }
+                    globalRecords_GO.GetComponent<Records>().AddNotificationOnDock("Burger", notifiText, transform.GetInstanceID());
                 }
           
             }
