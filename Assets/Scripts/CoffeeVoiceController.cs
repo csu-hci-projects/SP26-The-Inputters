@@ -40,6 +40,12 @@ public class CoffeeVoiceController : MonoBehaviour
     private void OnTranscription(string transcription)
     {
         Debug.Log($"[Voice] Heard: {transcription}");
+
+        if (transcription.IndexOf("coffee", System.StringComparison.OrdinalIgnoreCase) >= 0)
+        {
+            coffeeMaker.TurnOnCoffeeMaker();
+            Debug.Log("[Voice] Coffee maker triggered via transcription.");
+        }
     }
 
     private void OnError(string error, string message)
@@ -50,12 +56,5 @@ public class CoffeeVoiceController : MonoBehaviour
     private void OnResponse(WitResponseNode response)
     {
         Debug.Log($"[Voice] Raw response: {response}");
-        string intent = response.GetIntentName();
-        Debug.Log($"[Voice] Response received. Intent: '{intent}'");
-        if (string.Equals(intent, "start_coffee", System.StringComparison.OrdinalIgnoreCase))
-        {
-            coffeeMaker.TurnOnCoffeeMaker();
-            Debug.Log("[Voice] Coffee maker toggled via voice command.");
-        }
     }
 }
