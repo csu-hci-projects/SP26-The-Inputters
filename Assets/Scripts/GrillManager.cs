@@ -24,25 +24,25 @@ public class GrillManager : MonoBehaviour
     // Update is called once per frame
     
 
+    public void StartCooking()
+    {
+        foreach (string cutletName in cutletNames)
+        {
+            GameObject cutlet = GameObject.Find(cutletName);
+            if (cutlet != null)
+                cutlet.GetComponent<CutletManager>().SetCookingState(true);
+        }
+        Debug.Log($"[Voice] StartCooking called on {cutletNames.Count} cutlet(s).");
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Ingredient")
         {
             if (other.GetComponent<IngredientProperties>().GetPrefabName() == "Cutlet B" && !other.gameObject.GetComponent<ObjectManager>().isGrabbed)
             {
-                if (cutletNames.Count == 0)
-                {
+                if (!cutletNames.Contains(other.name))
                     cutletNames.Add(other.name);
-                    other.GetComponent<CutletManager>().SetCookingState(true);
-                }
-                else
-                {
-                    if (!cutletNames.Contains(other.name))
-                    {
-                        cutletNames.Add(other.name);
-                        other.GetComponent<CutletManager>().SetCookingState(true);
-                    }
-                }
             }
         }
     }
@@ -51,7 +51,7 @@ public class GrillManager : MonoBehaviour
     {
         if (other.tag == "Ingredient")
         {
-            if (other.GetComponent<IngredientProperties>().GetPrefabName() == "Cutlet B" && other.gameObject.GetComponent<ObjectManager>().isGrabbed)
+            if (other.GetComponent<IngredientProperties>().GetPrefabName() == "Cutlet B")
             {
                 if (cutletNames.Contains(other.name))
                 {
