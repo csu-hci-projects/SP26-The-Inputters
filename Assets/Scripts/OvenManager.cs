@@ -96,4 +96,9 @@ public class OvenManager : MonoBehaviour
                 Destroy(notification_GO);
         }
     }
+
+    public void ToggleOven()
+    {
+        cooking = !cooking;
+    }
 }
