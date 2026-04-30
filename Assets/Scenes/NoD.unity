@@ -993,6 +993,58 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1663653451}
   m_SourcePrefab: {fileID: 100100000, guid: bbbaf80223feda14fbd95a5006ae52e3, type: 3}
+--- !u!1 &487872247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 487872249}
+  - component: {fileID: 487872248}
+  m_Layer: 0
+  m_Name: PizzaAssemblyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &487872248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487872247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ac409d6c74e481ea87d3274166d800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doughKetchupPrefab: {fileID: 4013950636656191916, guid: 116f70bbcef41e041a6d84790fe48b55, type: 3}
+  spawnPoint: {fileID: 1817979873}
+  mushroomEmptyPrefab: {fileID: 2411297094259809787, guid: 6267c711c5efeed4695659a8c8d4826b, type: 3}
+  pepperoniEmptyPrefab: {fileID: 6422144910842885746, guid: 8373b69dee070964fb7622281c136c52, type: 3}
+  oliveEmptyPrefab: {fileID: 5910354537104549342, guid: 1fcf7616f81835f46a43113439da20ec, type: 3}
+  pepperEmptyPrefab: {fileID: 1898390334454378045, guid: 38fae426da3276f4bb42c4e35958bc0d, type: 3}
+  basilEmptyPrefab: {fileID: 9169486360002906594, guid: 8d328d5c0f61a0c46adcbf016fc305ab, type: 3}
+--- !u!4 &487872249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487872247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.533083, y: -0.7045787, z: -1.4977874}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1171023684}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &592028572 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3417816658661292622, guid: 852040652488671428af64c36a536b6f, type: 3}
@@ -1218,6 +1270,7 @@ MonoBehaviour:
   coffeeMaker: {fileID: 1927606813}
   grill: {fileID: 1350746389}
   oven: {fileID: 1885882678}
+  pizzaAssembly: {fileID: 487872248}
   feedbackText: {fileID: 1638105370}
 --- !u!1001 &638438453
 PrefabInstance:
@@ -2904,6 +2957,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9b9a7ba87803c478d69338bf6794c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1171023683
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171023684}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1171023684
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171023683}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: -1.482}
+  m_LocalScale: {x: 0.47, y: 0.00134091, z: 0.47}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 487872249}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1262228426 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7119868463607814285, guid: 9b8a5c84f5576f9449cd4480bfd446bd, type: 3}
@@ -5480,3 +5564,4 @@ SceneRoots:
   - {fileID: 629190825}
   - {fileID: 220951976}
   - {fileID: 726595138}
+  - {fileID: 487872249}
