@@ -55,29 +55,38 @@ public class OvenManager : MonoBehaviour
         }
     }
 
+    public void StartCooking()
+    {
+        if (food == null || cooking) return;
+        cooking = true;
+        Debug.Log("[Voice] StartCooking called on oven.");
+    }
+
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Ingredient_Base") && !other.gameObject.GetComponent<ObjectManager>().isGrabbed && !cooking)
+        if (other.CompareTag("Ingredient_Base") && !other.gameObject.GetComponent<ObjectManager>().isGrabbed)
         {
-            food = other.gameObject;
-            other.transform.position = pizzaPos.transform.position;
-            other.transform.rotation = Quaternion.identity;
-            cooking = true;
-            progressText_GO.GetComponent<TextMesh>().text = other.GetComponent<IngredientProperties>().GetCookingStatus();
-            switch (other.GetComponent<IngredientProperties>().GetCookingStatus())
+            if (food == null)
             {
-                case "Uncooked":
-                    cookingProgress = 0;
-                    prevQuotient = 0;
-                    break;
-                case "Cooked":
-                    cookingProgress = cookingSpeed * 1;
-                    break;
-                case "Burnt":
-                    cookingProgress = cookingSpeed * 2;
-                    RecordingManager recorder = FindObjectOfType<RecordingManager>();
-                    recorder.RecordEvent($"Pizza burnt");
-                    break;
+                food = other.gameObject;
+                other.transform.position = pizzaPos.transform.position;
+                other.transform.rotation = Quaternion.identity;
+                progressText_GO.GetComponent<TextMesh>().text = other.GetComponent<IngredientProperties>().GetCookingStatus();
+                switch (other.GetComponent<IngredientProperties>().GetCookingStatus())
+                {
+                    case "Uncooked":
+                        cookingProgress = 0;
+                        prevQuotient = 0;
+                        break;
+                    case "Cooked":
+                        cookingProgress = cookingSpeed * 1;
+                        break;
+                    case "Burnt":
+                        cookingProgress = cookingSpeed * 2;
+                        RecordingManager recorder = FindObjectOfType<RecordingManager>();
+                        recorder.RecordEvent($"Pizza burnt");
+                        break;
+                }
             }
         }
         else if (other.CompareTag("Ingredient_Base") && other.gameObject.GetComponent<ObjectManager>().isGrabbed)
@@ -92,6 +101,8 @@ public class OvenManager : MonoBehaviour
         {
             other.transform.GetChild(1).gameObject.SetActive(false);
             progressText_GO.GetComponent<TextMesh>().text = "Place Food";
+            cooking = false;
+            food = null;
             if (notification_GO != null)
                 Destroy(notification_GO);
         }
