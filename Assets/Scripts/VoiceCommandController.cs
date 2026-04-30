@@ -11,6 +11,7 @@ public class VoiceCommandController : MonoBehaviour
     [SerializeField] private CoffeeMakerManager coffeeMaker;
     [SerializeField] private GrillManager grill;
     [SerializeField] private OvenManager oven;
+    [SerializeField] private PizzaAssemblyManager pizzaAssembly;
     [SerializeField] private TextMeshProUGUI feedbackText;
 
     private Coroutine _feedbackCoroutine;
@@ -52,10 +53,40 @@ public class VoiceCommandController : MonoBehaviour
             grill.StartCooking();
             ShowFeedback("Starting grill");
         }
-        else if (Contains(transcription, "oven") || Contains(transcription, "pizza"))
+        else if (Contains(transcription, "oven"))
         {
             oven.StartCooking();
             ShowFeedback("Starting oven");
+        }
+        else if (Contains(transcription, "place pizza") || Contains(transcription, "set pizza"))
+        {
+            pizzaAssembly.PlacePizza();
+            ShowFeedback("Placing pizza");
+        }
+        else if (Contains(transcription, "pepperoni"))
+        {
+            pizzaAssembly.AddPepperoni();
+            ShowFeedback("Adding pepperoni");
+        }
+        else if (Contains(transcription, "mushroom"))
+        {
+            pizzaAssembly.AddMushroom();
+            ShowFeedback("Adding mushrooms");
+        }
+        else if (Contains(transcription, "olive"))
+        {
+            pizzaAssembly.AddOlive();
+            ShowFeedback("Adding olives");
+        }
+        else if (Contains(transcription, "pepper"))
+        {
+            pizzaAssembly.AddPepper();
+            ShowFeedback("Adding peppers");
+        }
+        else if (Contains(transcription, "basil"))
+        {
+            pizzaAssembly.AddBasil();
+            ShowFeedback("Adding basil");
         }
     }
 
