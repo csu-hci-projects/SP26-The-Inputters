@@ -10,6 +10,7 @@ public class VoiceCommandController : MonoBehaviour
     [SerializeField] private AppVoiceExperience voiceExperience;
     [SerializeField] private CoffeeMakerManager coffeeMaker;
     [SerializeField] private GrillManager grill;
+    [SerializeField] private OvenManager oven;
     [SerializeField] private TextMeshProUGUI feedbackText;
 
     private Coroutine _feedbackCoroutine;
@@ -50,6 +51,11 @@ public class VoiceCommandController : MonoBehaviour
         {
             grill.StartCooking();
             ShowFeedback("Starting grill");
+        }
+        else if (Contains(transcription, "oven") || Contains(transcription, "pizza"))
+        {
+            oven.StartCooking();
+            ShowFeedback("Starting oven");
         }
     }
 
