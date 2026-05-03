@@ -22,7 +22,13 @@ to standard controller-based interaction.
 --------------------------------------------------------------------------------
 LINKS
 --------------------------------------------------------------------------------
-Status Video (YouTube, unlisted):
+Checkpoint 2 Progress Video (YouTube, unlisted):
+  https://youtu.be/DlDk21Y3G3A
+
+Checkpoint 2 Prototype + Code Explanation Video (YouTube, unlisted):
+  https://youtu.be/C4gwgMxy-7w
+
+Checkpoint 1 Video (YouTube, unlisted):
   https://youtu.be/2F-WJ2OVuQc
 
 GitHub Repository:
