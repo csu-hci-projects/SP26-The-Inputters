@@ -62,6 +62,37 @@ public class OvenManager : MonoBehaviour
         Debug.Log("[Voice] StartCooking called on oven.");
     }
 
+    public void LoadPizza(GameObject pizza)
+    {
+        if (food != null)
+        {
+            Debug.Log("[Voice] Oven already has food.");
+            return;
+        }
+
+        food = pizza;
+        pizza.transform.position = pizzaPos.transform.position;
+        pizza.transform.rotation = Quaternion.identity;
+
+        string status = pizza.GetComponent<IngredientProperties>().GetCookingStatus();
+        progressText_GO.GetComponent<TextMesh>().text = status;
+        switch (status)
+        {
+            case "Uncooked":
+                cookingProgress = 0;
+                prevQuotient = 0;
+                break;
+            case "Cooked":
+                cookingProgress = cookingSpeed * 1;
+                break;
+            case "Burnt":
+                cookingProgress = cookingSpeed * 2;
+                break;
+        }
+
+        Debug.Log("[Voice] Pizza loaded into oven.");
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Ingredient_Base") && !other.gameObject.GetComponent<ObjectManager>().isGrabbed)

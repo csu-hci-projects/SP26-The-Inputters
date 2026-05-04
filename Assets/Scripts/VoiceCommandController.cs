@@ -12,6 +12,7 @@ public class VoiceCommandController : MonoBehaviour
     [SerializeField] private GrillManager grill;
     [SerializeField] private OvenManager oven;
     [SerializeField] private PizzaAssemblyManager pizzaAssembly;
+    [SerializeField] private BurgerAssemblyManager burgerAssembly;
     [SerializeField] private TextMeshProUGUI feedbackText;
 
     private Coroutine _feedbackCoroutine;
@@ -43,15 +44,85 @@ public class VoiceCommandController : MonoBehaviour
     {
         Debug.Log($"[Voice] Heard: {transcription}");
 
-        if (Contains(transcription, "coffee"))
+        if (Contains(transcription, "pour coffee"))
+        {
+            coffeeMaker.PourCoffeeIntoLastCup();
+            ShowFeedback("Pouring coffee");
+        }
+        else if (Contains(transcription, "grab cup") || Contains(transcription, "get cup"))
+        {
+            coffeeMaker.SpawnCup();
+            ShowFeedback("Grabbing cup");
+        }
+        else if (Contains(transcription, "coffee"))
         {
             coffeeMaker.TurnOnCoffeeMaker();
             ShowFeedback("Starting coffee machine");
+        }
+        else if (Contains(transcription, "add patty") || Contains(transcription, "patty done") || Contains(transcription, "take patty"))
+        {
+            if (grill.TransferPattyToBurger(burgerAssembly))
+                ShowFeedback("Adding patty to burger");
+            else
+                ShowFeedback("No patty on grill");
+        }
+        else if (Contains(transcription, "place patty") || Contains(transcription, "put patty"))
+        {
+            grill.PlacePattyOnGrill();
+            ShowFeedback("Placing patty on grill");
         }
         else if (Contains(transcription, "grill"))
         {
             grill.StartCooking();
             ShowFeedback("Starting grill");
+        }
+        else if (Contains(transcription, "bottom bun") || Contains(transcription, "place bun") || Contains(transcription, "start burger"))
+        {
+            burgerAssembly.PlaceBottomBun();
+            ShowFeedback("Placing bottom bun");
+        }
+        else if (Contains(transcription, "top bun") || Contains(transcription, "finish burger"))
+        {
+            burgerAssembly.AddTopBun();
+            ShowFeedback("Adding top bun");
+        }
+        else if (Contains(transcription, "cheese"))
+        {
+            burgerAssembly.AddCheese();
+            ShowFeedback("Adding cheese");
+        }
+        else if (Contains(transcription, "tomato"))
+        {
+            burgerAssembly.AddTomato();
+            ShowFeedback("Adding tomato");
+        }
+        else if (Contains(transcription, "onion"))
+        {
+            burgerAssembly.AddOnion();
+            ShowFeedback("Adding onion");
+        }
+        else if (Contains(transcription, "lettuce") || Contains(transcription, "salad"))
+        {
+            burgerAssembly.AddSalad();
+            ShowFeedback("Adding lettuce");
+        }
+        else if (Contains(transcription, "bacon"))
+        {
+            burgerAssembly.AddBacon();
+            ShowFeedback("Adding bacon");
+        }
+        else if (Contains(transcription, "bake pizza") || Contains(transcription, "put pizza in oven") || Contains(transcription, "pizza in oven"))
+        {
+            GameObject pizza = pizzaAssembly.HandOffActivePizza();
+            if (pizza != null)
+            {
+                oven.LoadPizza(pizza);
+                ShowFeedback("Putting pizza in oven");
+            }
+            else
+            {
+                ShowFeedback("No pizza to put in oven");
+            }
         }
         else if (Contains(transcription, "oven"))
         {
