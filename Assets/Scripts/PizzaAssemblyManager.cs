@@ -67,6 +67,18 @@ public class PizzaAssemblyManager : MonoBehaviour
         Debug.Log($"[Voice] Added {toppingName} to pizza.");
     }
 
+    public GameObject HandOffActivePizza()
+    {
+        if (activePizza == null)
+        {
+            Debug.Log("[Voice] No active pizza to hand off.");
+            return null;
+        }
+        GameObject pizza = activePizza;
+        activePizza = null;
+        return pizza;
+    }
+
     public void AddMushroom()  => AddTopping(mushroomEmptyPrefab,  "mushroom");
     public void AddPepperoni() => AddTopping(pepperoniEmptyPrefab, "pepperoni");
     public void AddOlive()     => AddTopping(oliveEmptyPrefab,     "olive");

@@ -14,6 +14,7 @@ public class CoffeeMakerManager : MonoBehaviour
     [SerializeField] float coffeeFillRate = 2;
     [SerializeField] float maxCoffeeLevel = 0.05f;
     [SerializeField] GameObject globalRecords_GO;
+    [SerializeField] GameObject cup;
 
     bool coffeeMakerOn = false;
     Renderer rend;
@@ -98,5 +99,44 @@ public class CoffeeMakerManager : MonoBehaviour
     public float GetCoffeeLevel()
     {
         return coffeeLevel;
+    }
+
+    public void SpawnCup()
+    {
+        if (cup == null)
+        {
+            Debug.LogWarning("[Voice] Cup not assigned.");
+            return;
+        }
+        if (cup.activeSelf)
+        {
+            Debug.Log("[Voice] Cup already out.");
+            return;
+        }
+        cup.SetActive(true);
+        Debug.Log("[Voice] Cup revealed.");
+    }
+
+    public void PourCoffeeIntoLastCup()
+    {
+        if (coffeeCupCnt <= 0)
+        {
+            Debug.Log("[Voice] Not enough coffee brewed yet.");
+            return;
+        }
+        if (cup == null || !cup.activeSelf)
+        {
+            Debug.Log("[Voice] No cup to pour into.");
+            return;
+        }
+        CoffeeCupManager cupManager = cup.GetComponentInChildren<CoffeeCupManager>();
+        if (cupManager == null)
+        {
+            Debug.LogWarning("[Voice] CoffeeCupManager not found on cup.");
+            return;
+        }
+        cupManager.FillToFull();
+        coffeeCupCnt--;
+        Debug.Log("[Voice] Coffee poured.");
     }
 }

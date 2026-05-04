@@ -18,6 +18,14 @@ public class CoffeeCupManager : MonoBehaviour
     }
 
 
+    public void FillToFull()
+    {
+        coffeeLevel = 0.03f;
+        rend.material.SetFloat("FillLevel", coffeeLevel);
+        coffeeCupCap.SetActive(true);
+        Debug.Log("[Voice] Cup filled to full.");
+    }
+
     private void OnTriggerStay(Collider other)
     {
        // Debug.Log("Something is inside the trigger: " + other.gameObject.name);
