@@ -147,6 +147,20 @@ public class BurgerAssemblyManager : MonoBehaviour
         Debug.Log("[Voice] Top bun placed. Burger complete.");
     }
 
+    public GameObject TakeCompletedBurger()
+    {
+        if (activeBurger == null) return null;
+        ObjectManager om = activeBurger.GetComponent<ObjectManager>();
+        if (om == null || om.mode != 4)
+        {
+            Debug.Log("[Voice] Burger not complete yet (needs top bun).");
+            return null;
+        }
+        GameObject burger = activeBurger;
+        activeBurger = null;
+        return burger;
+    }
+
     public void AddCheese()  => AddTopping(cheeseEmptyPrefab,  "cheese");
     public void AddTomato()  => AddTopping(tomatoEmptyPrefab,  "tomato");
     public void AddOnion()   => AddTopping(onionEmptyPrefab,   "onion");

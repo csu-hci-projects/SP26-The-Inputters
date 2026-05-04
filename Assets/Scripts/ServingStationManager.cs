@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ServingStationManager : MonoBehaviour
@@ -7,21 +8,18 @@ public class ServingStationManager : MonoBehaviour
     [SerializeField] GameObject customerPrefab;
     [SerializeField] GameObject[] customerPositionGO;
     [SerializeField] GameObject globalRecords_GO;
-    float customerDuration = 120;
-    int maxCustomerCount = 6;
+    float customerDuration = 999999f;
 
     Dictionary<int, GameObject> customers = new Dictionary<int, GameObject>();
     Vector3[] customerPositions = new Vector3[3];
-    List<string> foodItems = new List<string>() { "Pizza", "Burger", "Coffee" };
-    List<string> foodItemsLeft = new List<string>() { "Pizza", "Burger", "Coffee" };
     int numCustomers = 0;
     int totalCustomers = 0;
     string[] currCustomerNames;
-    GameObject notification_GO;
-    bool pauseCustCntCheck = false;
 
 
     // Start is called before the first frame update
+    private static readonly string[] fixedFoodItems = { "Coffee", "Burger", "Pizza" };
+
     void Start()
     {
         globalRecords_GO = GameObject.FindWithTag("Global Records");
@@ -30,41 +28,35 @@ public class ServingStationManager : MonoBehaviour
             customers.Add(i, null);
             customerPositions[i] = customerPositionGO[i].transform.localPosition;
         }
-    }
 
-    // Update is called once per frame
-    private void Update()
-    {
-
-        if (numCustomers < 3 && !pauseCustCntCheck && totalCustomers < maxCustomerCount)
+        currCustomerNames = new string[0];
+        for (int i = 0; i < 3; i++)
         {
-            pauseCustCntCheck = true;
-            StartCoroutine(BringCustomer());
-        }
-        if (totalCustomers >= maxCustomerCount)
-        {
-            StopCoroutine(BringCustomer());
-            
-        }
+            GameObject tempCustomer = Instantiate(customerPrefab);
+            customers[i] = tempCustomer;
+            tempCustomer.transform.parent = transform;
+            tempCustomer.transform.localPosition = customerPositions[i];
+            tempCustomer.transform.localRotation = Quaternion.identity;
+            tempCustomer.GetComponent<CustomerManager>().CreateCustomer(customerDuration, fixedFoodItems[i], i, currCustomerNames, i);
+            tempCustomer.GetComponent<CustomerManager>().SetObjectID(tempCustomer.GetInstanceID().ToString());
+            numCustomers++;
+            totalCustomers++;
 
-    }
-
-
-
-    public void AddCustomer(int custPos, GameObject custRef)
-    {
-        numCustomers++;
-        customers[custPos] = custRef;
-        custRef.transform.parent = transform;
-        custRef.transform.localPosition = customerPositions[custPos];
-        custRef.transform.localRotation = Quaternion.identity;
-        custRef.GetComponent<CustomerManager>().CreateCustomer(customerDuration, GetFoodItem(), custPos, currCustomerNames, totalCustomers);
-        custRef.GetComponent<CustomerManager>().SetObjectID(custRef.GetInstanceID().ToString());
-        if (globalRecords_GO.GetComponent<Records>().GetPersistentGO().GetComponent<PersistentGOManager>().GetShowNotification())
-        {
-            globalRecords_GO.GetComponent<Records>().AddNotificationOnDock("Customer", "New Customer", custRef.transform.GetInstanceID());
+            GameObject labelGO = new GameObject($"CustomerLabel_{i + 1}");
+            labelGO.transform.SetParent(tempCustomer.transform);
+            labelGO.transform.localPosition = new Vector3(0f, 0.3f, 0f);
+            labelGO.transform.localRotation = Quaternion.identity;
+            TextMeshPro tmp = labelGO.AddComponent<TextMeshPro>();
+            tmp.text = $"Customer {i + 1}";
+            tmp.fontSize = 0.6f;
+            tmp.alignment = TextAlignmentOptions.Center;
+            tmp.color = new Color(0.1f, 0.13f, 0.25f);
+            tmp.rectTransform.sizeDelta = new UnityEngine.Vector2(0.6f, 0.2f);
         }
     }
+
+
+
 
     public void RemoveCustomer(GameObject cust)
     {
@@ -81,33 +73,6 @@ public class ServingStationManager : MonoBehaviour
         }
         numCustomers--;
        // PersistentGOManager.instance.AddData("Customer", cust.name + ":" + cust.GetInstanceID().ToString(), 2);
-    }
-
-    private IEnumerator BringCustomer()
-    {
-        yield return new WaitForSeconds(5);
-        GameObject tempCustomer = Instantiate(customerPrefab);
-        for (int i = 0; i < 3; i++)
-        {
-            if (customers[i] == null)
-            {
-                currCustomerNames = CustomerNames();
-                AddCustomer(i, tempCustomer);
-                totalCustomers++;
-                break;
-            }
-        }
-        pauseCustCntCheck = false;
-    }
-
-    string GetFoodItem()
-    {
-        if (foodItemsLeft.Count == 0)
-            foodItemsLeft = new List<string>(foodItems);
-        int foodItemIndex = Random.Range(0, foodItemsLeft.Count);
-        string foodItem = foodItemsLeft[foodItemIndex];
-        foodItemsLeft.RemoveRange(foodItemIndex, 1);
-        return foodItem;
     }
 
     string[] CustomerNames()
@@ -139,5 +104,19 @@ public class ServingStationManager : MonoBehaviour
         return totalCustomers;
     }
 
+    public CustomerManager GetCustomer(int index)
+    {
+        if (!customers.ContainsKey(index) || customers[index] == null) return null;
+        return customers[index].GetComponent<CustomerManager>();
+    }
 
+    public void ServeCustomer(int index)
+    {
+        if (!customers.ContainsKey(index) || customers[index] == null) return;
+        GameObject cust = customers[index];
+        customers[index] = null;
+        numCustomers--;
+        Destroy(cust);
+        Debug.Log($"[Voice] Customer {index + 1} served and removed.");
+    }
 }

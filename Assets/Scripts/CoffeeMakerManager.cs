@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CoffeeMakerManager : MonoBehaviour
@@ -15,8 +16,10 @@ public class CoffeeMakerManager : MonoBehaviour
     [SerializeField] float maxCoffeeLevel = 0.05f;
     [SerializeField] GameObject globalRecords_GO;
     [SerializeField] GameObject cup;
+    [SerializeField] private TextMeshPro coffeeStatusText;
 
     bool coffeeMakerOn = false;
+    bool cupFull = false;
     Renderer rend;
     float coffeeLevel = -0.05f;
     int coffeeCupCnt = 0;
@@ -28,6 +31,8 @@ public class CoffeeMakerManager : MonoBehaviour
         globalRecords_GO = GameObject.FindWithTag("Global Records");
         Physics.IgnoreCollision(coffeePotGlass.GetComponent<MeshCollider>(), coffeeMakerBody.GetComponent<MeshCollider>(), true);
         rend = coffeeLevel_GO.GetComponent<Renderer>();
+        if (coffeeStatusText != null)
+            coffeeStatusText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -88,12 +93,37 @@ public class CoffeeMakerManager : MonoBehaviour
         if (coffeeMakerOn)
         {
             coffeeMakerOn = false;
+            if (coffeeStatusText != null)
+                coffeeStatusText.gameObject.SetActive(false);
         }
         else
         {
             coffeeMakerOn = true;
             coffeeLevel = rend.material.GetFloat("FillLevel");
+            if (coffeeStatusText != null)
+            {
+                coffeeStatusText.text = "Coffee Maker: ON";
+                coffeeStatusText.gameObject.SetActive(true);
+            }
         }
+    }
+
+    public bool TakeFilledCup()
+    {
+        if (!cupFull)
+        {
+            Debug.Log("[Voice] Cup is not filled yet.");
+            return false;
+        }
+        if (cup == null || !cup.activeSelf)
+        {
+            Debug.Log("[Voice] No cup available.");
+            return false;
+        }
+        cup.SetActive(false);
+        cupFull = false;
+        Debug.Log("[Voice] Cup taken for serving.");
+        return true;
     }
 
     public float GetCoffeeLevel()
@@ -114,11 +144,17 @@ public class CoffeeMakerManager : MonoBehaviour
             return;
         }
         cup.SetActive(true);
+        cupFull = false;
         Debug.Log("[Voice] Cup revealed.");
     }
 
     public void PourCoffeeIntoLastCup()
     {
+        if (cupFull)
+        {
+            Debug.Log("[Voice] Cup is already full.");
+            return;
+        }
         if (coffeeCupCnt <= 0)
         {
             Debug.Log("[Voice] Not enough coffee brewed yet.");
@@ -136,7 +172,10 @@ public class CoffeeMakerManager : MonoBehaviour
             return;
         }
         cupManager.FillToFull();
+        cupFull = true;
         coffeeCupCnt--;
+        coffeeLevel -= (maxCoffeeLevel * 2f) / 3f;
+        rend.material.SetFloat("FillLevel", coffeeLevel);
         Debug.Log("[Voice] Coffee poured.");
     }
 }

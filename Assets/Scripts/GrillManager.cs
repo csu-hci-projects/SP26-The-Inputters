@@ -2,21 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class GrillManager : MonoBehaviour
 {
     [SerializeField] float cookingSpeed;
     [SerializeField] GameObject grillPatty;
+    [SerializeField] private TextMeshPro grillStatusText;
 
     List<string> cutletNames = new List<string>();
     int prevQuotient;
+    bool grillOn = false;
 
 
     void Start()
     {
         if (grillPatty != null)
             grillPatty.SetActive(false);
+        if (grillStatusText != null)
+            grillStatusText.gameObject.SetActive(false);
     }
 
     public void PlacePattyOnGrill()
@@ -32,7 +37,7 @@ public class GrillManager : MonoBehaviour
             return;
         }
         grillPatty.SetActive(true);
-        Debug.Log("[Voice] Patty placed on grill.");
+        Debug.Log($"[Voice] Patty placed on grill. Position: {grillPatty.transform.position}, ActiveInHierarchy: {grillPatty.activeInHierarchy}, ActiveSelf: {grillPatty.activeSelf}");
     }
 
     public bool TransferPattyToBurger(BurgerAssemblyManager burger)
@@ -53,6 +58,19 @@ public class GrillManager : MonoBehaviour
         cutletNames.Remove(grillPatty.name);
         cm.SetCookingState(false);
         grillPatty.SetActive(false);
+
+        foreach (string cutletName in cutletNames)
+        {
+            GameObject cutlet = GameObject.Find(cutletName);
+            if (cutlet != null)
+                cutlet.GetComponent<CutletManager>().SetCookingState(false);
+        }
+        cutletNames.Clear();
+
+        grillOn = false;
+        if (grillStatusText != null)
+            grillStatusText.gameObject.SetActive(false);
+
         burger.AddPatty(cookingStatus);
         Debug.Log($"[Voice] Transferred {cookingStatus} patty to burger.");
         return true;
@@ -60,18 +78,34 @@ public class GrillManager : MonoBehaviour
 
     public void StartCooking()
     {
+        grillOn = !grillOn;
+
         if (grillPatty != null && grillPatty.activeSelf)
         {
             CutletManager cm = grillPatty.GetComponent<CutletManager>();
-            if (cm != null) cm.SetCookingState(true);
+            if (cm != null) cm.SetCookingState(grillOn);
         }
+
         foreach (string cutletName in cutletNames)
         {
             GameObject cutlet = GameObject.Find(cutletName);
             if (cutlet != null)
-                cutlet.GetComponent<CutletManager>().SetCookingState(true);
+                cutlet.GetComponent<CutletManager>().SetCookingState(grillOn);
         }
-        Debug.Log($"[Voice] StartCooking called on {cutletNames.Count} cutlet(s) + voice patty.");
+
+        if (grillStatusText != null)
+        {
+            if (grillOn)
+            {
+                grillStatusText.text = "Grill: ON";
+                grillStatusText.gameObject.SetActive(true);
+            }
+            else
+            {
+                grillStatusText.gameObject.SetActive(false);
+            }
+        }
+        Debug.Log($"[Voice] Grill toggled {(grillOn ? "ON" : "OFF")}.");
     }
 
     private void OnTriggerStay(Collider other)
