@@ -22,6 +22,7 @@ public class CustomerManager : MonoBehaviour
     public float timerRemaining;
     string objectID;
     int customerNumber = 0;
+    string foodType = "";
     // Start is called before the first frame update
 
     public float spawnTime { get; private set; }
@@ -68,11 +69,12 @@ public class CustomerManager : MonoBehaviour
 
     public void CreateCustomer(float custLife, string foodItem, int custPos, string[] customerNames, int custNum)
     {
-        // difficultyLevel = custPos;                      // For testing.
         customerNumber = custNum;
         currCustomerNames = customerNames;
         customerLifeTime = custLife;
+        foodType = foodItem;
         spawnTime = Time.time;
+        if (timer != null) timer.SetActive(false);
         InitializeFood(foodItem);
         StartCoroutine(CustomerLifeFunctions(foodItem));
     }
@@ -221,5 +223,10 @@ public class CustomerManager : MonoBehaviour
     public string GetObjectID()
     {
         return objectID;
+    }
+
+    public string GetFoodType()
+    {
+        return foodType;
     }
 }

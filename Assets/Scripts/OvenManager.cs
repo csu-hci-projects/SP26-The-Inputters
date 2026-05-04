@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class OvenManager : MonoBehaviour
@@ -9,6 +10,7 @@ public class OvenManager : MonoBehaviour
     [SerializeField] float cookingSpeed;
     [SerializeField] GameObject progressText_GO;
     [SerializeField] GameObject globalRecords_GO;
+    [SerializeField] private TextMeshPro ovenStatusText;
 
     bool cooking = false;
     float cookingProgress = 0;
@@ -21,6 +23,8 @@ public class OvenManager : MonoBehaviour
     void Start()
     {
         globalRecords_GO = GameObject.FindWithTag("Global Records");
+        if (ovenStatusText != null)
+            ovenStatusText.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -44,6 +48,8 @@ public class OvenManager : MonoBehaviour
                     case 2:
                         progressText_GO.GetComponent<TextMesh>().text = "Burnt";
                         cooking = false;
+                        if (ovenStatusText != null)
+                            ovenStatusText.gameObject.SetActive(false);
                         break;
                 }
 
@@ -57,9 +63,21 @@ public class OvenManager : MonoBehaviour
 
     public void StartCooking()
     {
-        if (food == null || cooking) return;
-        cooking = true;
-        Debug.Log("[Voice] StartCooking called on oven.");
+        cooking = !cooking;
+
+        if (ovenStatusText != null)
+        {
+            if (cooking)
+            {
+                ovenStatusText.text = "Oven: ON";
+                ovenStatusText.gameObject.SetActive(true);
+            }
+            else
+            {
+                ovenStatusText.gameObject.SetActive(false);
+            }
+        }
+        Debug.Log($"[Voice] Oven toggled {(cooking ? "ON" : "OFF")}.");
     }
 
     public void LoadPizza(GameObject pizza)
@@ -93,6 +111,26 @@ public class OvenManager : MonoBehaviour
         Debug.Log("[Voice] Pizza loaded into oven.");
     }
 
+    public GameObject TakeCookedPizza()
+    {
+        if (food == null)
+        {
+            Debug.Log("[Voice] No pizza in oven.");
+            return null;
+        }
+        if (food.GetComponent<IngredientProperties>().GetCookingStatus() != "Cooked")
+        {
+            Debug.Log("[Voice] Pizza not cooked yet.");
+            return null;
+        }
+        GameObject pizza = food;
+        food = null;
+        cooking = false;
+        progressText_GO.GetComponent<TextMesh>().text = "Place Food";
+        if (ovenStatusText != null) ovenStatusText.gameObject.SetActive(false);
+        return pizza;
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Ingredient_Base") && !other.gameObject.GetComponent<ObjectManager>().isGrabbed)
@@ -123,6 +161,8 @@ public class OvenManager : MonoBehaviour
         else if (other.CompareTag("Ingredient_Base") && other.gameObject.GetComponent<ObjectManager>().isGrabbed)
         {
             cooking = false;
+            if (ovenStatusText != null)
+                ovenStatusText.gameObject.SetActive(false);
         }
     }
 
@@ -134,6 +174,8 @@ public class OvenManager : MonoBehaviour
             progressText_GO.GetComponent<TextMesh>().text = "Place Food";
             cooking = false;
             food = null;
+            if (ovenStatusText != null)
+                ovenStatusText.gameObject.SetActive(false);
             if (notification_GO != null)
                 Destroy(notification_GO);
         }
