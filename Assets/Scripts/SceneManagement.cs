@@ -1,37 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
-    [SerializeField] private TMP_Dropdown participantDropdown;
+    public enum InputMode { Controller = 0, Hands = 1, Voice = 2, Test = 3 }
+
+    [SerializeField] private TMP_Dropdown modeDropdown;
     [SerializeField] private string gameSceneName = "NoD";
-    private string selectedParticipant;
 
     void Start()
     {
-        participantDropdown.onValueChanged.AddListener(delegate { UpdateParticipant(); });
-    }
-
-    void UpdateParticipant()
-    {
-        selectedParticipant = participantDropdown.options[participantDropdown.value].text;
+        modeDropdown.ClearOptions();
+        modeDropdown.AddOptions(new System.Collections.Generic.List<string>
+        {
+            "Controller",
+            "Hands",
+            "Voice",
+            "Test (All)"
+        });
+        modeDropdown.value = (int)InputMode.Test;
+        modeDropdown.RefreshShownValue();
     }
 
     public void StartExperiment()
     {
-        if (string.IsNullOrEmpty(selectedParticipant))
-        {
-            Debug.LogWarning("Please select a participant number.");
-            return;
-        }
-
-        PlayerPrefs.SetString("ParticipantNo", selectedParticipant);
-        PlayerPrefs.SetString("NotificationType", gameSceneName);
-
-        Debug.Log($"Starting scene: {gameSceneName} for Participant {selectedParticipant}");
+        PlayerPrefs.SetInt("InputMode", modeDropdown.value);
+        PlayerPrefs.Save();
+        Debug.Log($"Starting {gameSceneName} in mode: {(InputMode)modeDropdown.value}");
         SceneManager.LoadScene(gameSceneName);
     }
 }

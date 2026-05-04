@@ -1204,7 +1204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a460962b6be4ad19c9e804c8f97f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openAIApiKey:
+  openAIApiKey: 
   coffeeMaker: {fileID: 1927606813}
   grill: {fileID: 1350746389}
   oven: {fileID: 1885882678}
@@ -4351,6 +4351,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3642352042163518208, guid: f54012181eacade4ea242c65f804720f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1998285232}
+    - targetCorrespondingSourceObject: {fileID: 3642352042163518208, guid: f54012181eacade4ea242c65f804720f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1998285233}
     - targetCorrespondingSourceObject: {fileID: 2483171112401766336, guid: f54012181eacade4ea242c65f804720f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 68434044}
@@ -4393,6 +4396,46 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerOrigin: {fileID: 1811639771}
   _playerHead: {fileID: 1811639770}
+--- !u!1 &1811639773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2799484147959018067, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639774 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3085809191287354393, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639775 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2114066618324875880, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8092570672683494507, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639777 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 541124696246638710, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639778 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7547965820796259707, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639779 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 505067054499944665, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1811639780 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 238424321818482630, guid: f54012181eacade4ea242c65f804720f, type: 3}
+  m_PrefabInstance: {fileID: 1811639768}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1815770681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4908,6 +4951,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   turnSpeed: 90
+--- !u!114 &1998285233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1811639769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e028acdd07f4b02bb124028119846b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ovrControllers: {fileID: 1811639773}
+  ovrHands: {fileID: 1811639780}
+  leftHandGrabUseSynthetic: {fileID: 1811639779}
+  rightHandGrabUseSynthetic: {fileID: 1811639778}
+  leftHandTouchGrabSynthetic: {fileID: 1811639777}
+  rightHandTouchGrabSynthetic: {fileID: 1811639775}
+  leftHandSynthetic: {fileID: 1811639776}
+  rightHandSynthetic: {fileID: 1811639774}
+  voiceCommandController: {fileID: 629190826}
+  playerLocomotion: {fileID: 1998285232}
 --- !u!1001 &2001697546
 PrefabInstance:
   m_ObjectHideFlags: 0
