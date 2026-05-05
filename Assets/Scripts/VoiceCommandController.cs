@@ -21,6 +21,12 @@ public class VoiceCommandController : MonoBehaviour
     [SerializeField] private ServingStationManager servingStation;
     [SerializeField] private TextMeshProUGUI feedbackText;
 
+    [Header("Help Panel")]
+    [SerializeField] private GameObject helpPanel;
+    [SerializeField] private TextMeshProUGUI helpPanelText;
+    private Coroutine _helpCoroutine;
+    private bool _helpVisible;
+
     private AudioClip _recording;
     private bool _isRecording;
     private Coroutine _feedbackCoroutine;
@@ -182,6 +188,21 @@ public class VoiceCommandController : MonoBehaviour
         bool canMachine  = commandMode == VoiceCommandMode.Full || commandMode == VoiceCommandMode.MacroAndServe;
         bool canAssemble = commandMode == VoiceCommandMode.Full;
 
+        // --- Close help panel ---
+        if (_helpVisible && Contains(transcription, "close"))
+        {
+            CloseHelp();
+            return;
+        }
+
+        // --- Help (available in all voice modes) ---
+        if (Contains(transcription, "help"))
+        {
+            if (Contains(transcription, "coffee"))      { ShowHelp("coffee"); return; }
+            if (Contains(transcription, "burger"))      { ShowHelp("burger"); return; }
+            if (Contains(transcription, "pizza"))       { ShowHelp("pizza");  return; }
+        }
+
         // --- Serve (always available when voice is active) ---
         if (Contains(transcription, "serve") && Contains(transcription, "customer"))
         {
@@ -324,6 +345,86 @@ public class VoiceCommandController : MonoBehaviour
         {
             Debug.Log($"[Voice] No command matched (mode: {commandMode}): {transcription}");
         }
+    }
+
+    private void ShowHelp(string topic)
+    {
+        if (helpPanel == null || helpPanelText == null) return;
+        if (_helpCoroutine != null) StopCoroutine(_helpCoroutine);
+        helpPanelText.text = GetHelpText(topic);
+        helpPanel.SetActive(true);
+        _helpVisible = true;
+        _helpCoroutine = StartCoroutine(AutoCloseHelp());
+    }
+
+    private void CloseHelp()
+    {
+        if (_helpCoroutine != null) StopCoroutine(_helpCoroutine);
+        if (helpPanel != null) helpPanel.SetActive(false);
+        _helpVisible = false;
+    }
+
+    private IEnumerator AutoCloseHelp()
+    {
+        yield return new WaitForSeconds(15f);
+        CloseHelp();
+    }
+
+    private string GetHelpText(string topic)
+    {
+        string header = $"── {topic.ToUpper()} COMMANDS ──\n\n";
+        string footer = "\n\nSay 'close' to dismiss";
+        string body = "";
+
+        bool canAssemble = commandMode == VoiceCommandMode.Full;
+        bool canMachine  = commandMode == VoiceCommandMode.Full || commandMode == VoiceCommandMode.MacroAndServe;
+
+        switch (topic.ToLower())
+        {
+            case "coffee":
+                if (canMachine)
+                {
+                    body += "\"coffee\"  →  start coffee maker\n";
+                    body += "\"grab cup\"  →  get a cup\n";
+                    body += "\"pour coffee\"  →  fill the cup\n";
+                }
+                body += "\"serve coffee to customer 1 / 2 / 3\"";
+                break;
+
+            case "burger":
+                if (canAssemble)
+                {
+                    body += "\"place patty\"  →  place patty on grill\n";
+                    body += "\"grill\"  →  start grill\n";
+                    body += "\"add patty\"  →  move patty to burger\n";
+                    body += "\"bottom bun\"  →  place bottom bun\n";
+                    body += "\"cheese / tomato / onion / lettuce / bacon\"  →  add toppings\n";
+                    body += "\"top bun\"  →  finish burger\n";
+                }
+                else if (canMachine)
+                {
+                    body += "\"grill\"  →  start grill\n";
+                }
+                body += "\"serve burger to customer 1 / 2 / 3\"";
+                break;
+
+            case "pizza":
+                if (canAssemble)
+                {
+                    body += "\"place pizza\"  →  place pizza dough\n";
+                    body += "\"pepperoni / mushroom / olive / pepper / basil\"  →  add toppings\n";
+                    body += "\"bake pizza\"  →  put pizza in oven\n";
+                    body += "\"oven\"  →  start oven\n";
+                }
+                else if (canMachine)
+                {
+                    body += "\"oven\"  →  start oven\n";
+                }
+                body += "\"serve pizza to customer 1 / 2 / 3\"";
+                break;
+        }
+
+        return header + body + footer;
     }
 
     private void ShowFeedback(string message)
