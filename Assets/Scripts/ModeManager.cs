@@ -73,6 +73,7 @@ public class ModeManager : MonoBehaviour
                     SceneManagement.InputMode.HandsAndVoice       => VoiceCommandController.VoiceCommandMode.MacroAndServe,
                     _                                             => VoiceCommandController.VoiceCommandMode.Full
                 };
+                voiceCommandController.ShowIntroHelp();
             }
         }
 

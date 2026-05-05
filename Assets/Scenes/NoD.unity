@@ -1330,6 +1330,7 @@ MonoBehaviour:
   pizzaAssembly: {fileID: 487872248}
   burgerAssembly: {fileID: 662088725}
   servingStation: {fileID: 2142239627}
+  finishButton: {fileID: 141015527}
   feedbackText: {fileID: 1638105370}
   helpPanel: {fileID: 1894913880}
   helpPanelText: {fileID: 850633708}
