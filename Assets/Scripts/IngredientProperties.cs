@@ -111,13 +111,14 @@ public class IngredientProperties : MonoBehaviour
         }
         if (cookingStatusEffectsObject != null)
             Destroy(cookingStatusEffectsObject);
-        GameObject.FindWithTag("Global Records").GetComponent<Records>().SetCookingStatusEffects(x, transform.Find("Cooking Status").gameObject, foodItem);
+        Transform cookingStatusChild = transform.Find("Cooking Status");
+        if (cookingStatusChild != null)
+            GameObject.FindWithTag("Global Records").GetComponent<Records>().SetCookingStatusEffects(x, cookingStatusChild.gameObject, foodItem);
 
         if (x == 2)
         {
             RecordingManager recorder = FindObjectOfType<RecordingManager>();
             recorder.RecordEvent($"Burger burnt");
-            // cookingStatusEffectsObject = Instantiate(transform.GetComponent<ObjectManager>().globalRecords_GO.GetComponent<Records>().GetCookingStatusEffects(x, foodItem));
             cookingStatusEffectsObject = Instantiate(GameObject.FindWithTag("Global Records").GetComponent<Records>().GetFirePrefab());
             cookingStatusEffectsObject.transform.parent = transform;
             cookingStatusEffectsObject.transform.position = transform.position;

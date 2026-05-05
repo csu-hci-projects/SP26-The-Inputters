@@ -3,7 +3,9 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class VoiceCommandController : MonoBehaviour
 {
@@ -33,6 +35,33 @@ public class VoiceCommandController : MonoBehaviour
     private bool _isRecording;
     private Coroutine _feedbackCoroutine;
     private const int SampleRate = 16000;
+
+    private void Awake()
+    {
+        ForceOverlayTMP(feedbackText);
+        if (helpPanel != null)
+        {
+            ForceOverlayTMP(helpPanelText);
+            foreach (Image img in helpPanel.GetComponentsInChildren<Image>(true))
+                ForceOverlayImage(img);
+        }
+    }
+
+    private static void ForceOverlayTMP(TextMeshProUGUI tmp)
+    {
+        if (tmp == null) return;
+        Material m = new Material(tmp.fontSharedMaterial);
+        m.SetInt("unity_GUIZTestMode", (int)CompareFunction.Always);
+        tmp.fontMaterial = m;
+    }
+
+    private static void ForceOverlayImage(Image img)
+    {
+        if (img == null) return;
+        Material m = new Material(img.material);
+        m.SetInt("unity_GUIZTestMode", (int)CompareFunction.Always);
+        img.material = m;
+    }
 
     private void Update()
     {
@@ -278,14 +307,16 @@ public class VoiceCommandController : MonoBehaviour
         }
 
         // --- Assembly (Full only) ---
-        else if (canAssemble && (Contains(transcription, "add patty") || Contains(transcription, "patty done") || Contains(transcription, "take patty")))
+        else if (canAssemble && (Contains(transcription, "add patty") || Contains(transcription, "patty done") || Contains(transcription, "take patty")
+                              || Contains(transcription, "add paddy") || Contains(transcription, "paddy done") || Contains(transcription, "take paddy")))
         {
             if (grill.TransferPattyToBurger(burgerAssembly))
                 ShowFeedback("Adding patty to burger");
             else
                 ShowFeedback("No patty on grill");
         }
-        else if (canAssemble && (Contains(transcription, "place patty") || Contains(transcription, "put patty")))
+        else if (canAssemble && (Contains(transcription, "place patty") || Contains(transcription, "put patty")
+                              || Contains(transcription, "place paddy") || Contains(transcription, "put paddy")))
         {
             grill.PlacePattyOnGrill();
             ShowFeedback("Placing patty on grill");

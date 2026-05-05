@@ -15,7 +15,6 @@ public class GrillManager : MonoBehaviour
     int prevQuotient;
     bool grillOn = false;
 
-
     void Start()
     {
         if (grillPatty != null)
@@ -37,7 +36,14 @@ public class GrillManager : MonoBehaviour
             return;
         }
         grillPatty.SetActive(true);
-        Debug.Log($"[Voice] Patty placed on grill. Position: {grillPatty.transform.position}, ActiveInHierarchy: {grillPatty.activeInHierarchy}, ActiveSelf: {grillPatty.activeSelf}");
+
+        if (grillOn)
+        {
+            CutletManager cm = grillPatty.GetComponent<CutletManager>();
+            if (cm != null) cm.SetCookingState(true);
+        }
+
+        Debug.Log($"[Voice] Patty placed on grill. GrillOn:{grillOn}");
     }
 
     public bool TransferPattyToBurger(BurgerAssemblyManager burger)
@@ -112,10 +118,15 @@ public class GrillManager : MonoBehaviour
     {
         if (other.tag == "Ingredient")
         {
+            if (other.gameObject == grillPatty) return;
             if (other.GetComponent<IngredientProperties>().GetPrefabName() == "Cutlet B" && !other.gameObject.GetComponent<ObjectManager>().isGrabbed)
             {
                 if (!cutletNames.Contains(other.name))
+                {
                     cutletNames.Add(other.name);
+                    if (grillOn)
+                        other.GetComponent<CutletManager>().SetCookingState(true);
+                }
             }
         }
     }
@@ -124,6 +135,7 @@ public class GrillManager : MonoBehaviour
     {
         if (other.tag == "Ingredient")
         {
+            if (other.gameObject == grillPatty) return;
             if (other.GetComponent<IngredientProperties>().GetPrefabName() == "Cutlet B")
             {
                 if (cutletNames.Contains(other.name))
