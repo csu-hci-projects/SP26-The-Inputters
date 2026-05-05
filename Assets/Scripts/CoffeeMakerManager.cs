@@ -110,20 +110,35 @@ public class CoffeeMakerManager : MonoBehaviour
 
     public bool TakeFilledCup()
     {
-        if (!cupFull)
+        // Check the managed cup first (voice workflow: SpawnCup + PourCoffeeIntoLastCup)
+        if (cup != null && cup.activeSelf)
         {
-            Debug.Log("[Voice] Cup is not filled yet.");
-            return false;
+            CoffeeCupManager cupManager = cup.GetComponentInChildren<CoffeeCupManager>();
+            bool isFull = cupFull || (cupManager != null && cupManager.coffeeLevel >= 0.03f);
+            if (isFull)
+            {
+                cup.SetActive(false);
+                cupFull = false;
+                Debug.Log("[Voice] Managed cup taken for serving.");
+                return true;
+            }
         }
-        if (cup == null || !cup.activeSelf)
+
+        // Fallback: find any physically-spawned cup that has been filled
+        foreach (CoffeeCupManager cm in FindObjectsOfType<CoffeeCupManager>())
         {
-            Debug.Log("[Voice] No cup available.");
-            return false;
+            if (cup != null && cm.transform.IsChildOf(cup.transform)) continue;
+            if (cm.coffeeLevel >= 0.03f)
+            {
+                GameObject cupRoot = cm.transform.parent != null ? cm.transform.parent.gameObject : cm.gameObject;
+                Destroy(cupRoot);
+                Debug.Log("[Voice] Physically-filled cup taken for serving.");
+                return true;
+            }
         }
-        cup.SetActive(false);
-        cupFull = false;
-        Debug.Log("[Voice] Cup taken for serving.");
-        return true;
+
+        Debug.Log("[Voice] No filled cup available.");
+        return false;
     }
 
     public float GetCoffeeLevel()

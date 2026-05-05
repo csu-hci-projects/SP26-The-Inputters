@@ -6,6 +6,8 @@ using TMPro;
 
 public class CustomerTrayManager : MonoBehaviour
 {
+    public static bool PhysicalServingEnabled = true;
+
     int numObjects = 0;
     GameObject persistentGO;
     public CustomerManager cManager;
@@ -37,6 +39,8 @@ public class CustomerTrayManager : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (!PhysicalServingEnabled) return;
+
         //Debug.Log("OnTriggerStay called for: " + other.gameObject.name);
         if (other.CompareTag("Coffee_Cup") || other.CompareTag("Ingredient_Base"))
         {

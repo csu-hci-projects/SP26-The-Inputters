@@ -113,22 +113,34 @@ public class OvenManager : MonoBehaviour
 
     public GameObject TakeCookedPizza()
     {
-        if (food == null)
+        // Check pizza currently sitting in the oven
+        if (food != null)
         {
-            Debug.Log("[Voice] No pizza in oven.");
-            return null;
+            if (food.GetComponent<IngredientProperties>().GetCookingStatus() != "Cooked")
+            {
+                Debug.Log("[Voice] Pizza not cooked yet.");
+                return null;
+            }
+            GameObject pizza = food;
+            food = null;
+            cooking = false;
+            progressText_GO.GetComponent<TextMesh>().text = "Place Food";
+            if (ovenStatusText != null) ovenStatusText.gameObject.SetActive(false);
+            return pizza;
         }
-        if (food.GetComponent<IngredientProperties>().GetCookingStatus() != "Cooked")
+
+        // Fallback: pizza was grabbed out of the oven and is being held or placed nearby
+        foreach (IngredientProperties ip in FindObjectsOfType<IngredientProperties>())
         {
-            Debug.Log("[Voice] Pizza not cooked yet.");
-            return null;
+            if (ip.GetPrefabName() == "Dough Ketchup" && ip.GetCookingStatus() == "Cooked")
+            {
+                Debug.Log("[Voice] Found cooked pizza outside oven.");
+                return ip.gameObject;
+            }
         }
-        GameObject pizza = food;
-        food = null;
-        cooking = false;
-        progressText_GO.GetComponent<TextMesh>().text = "Place Food";
-        if (ovenStatusText != null) ovenStatusText.gameObject.SetActive(false);
-        return pizza;
+
+        Debug.Log("[Voice] No cooked pizza found.");
+        return null;
     }
 
     private void OnTriggerStay(Collider other)

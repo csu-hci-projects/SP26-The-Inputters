@@ -6,6 +6,12 @@ using UnityEngine.Networking;
 
 public class VoiceCommandController : MonoBehaviour
 {
+    // Full     = all commands (Voice-only, Test)
+    // MacroAndServe = machine triggers + serve only (Hands+Voice)
+    // ServeOnly     = serve commands only (Controllers+Voice)
+    public enum VoiceCommandMode { Full, MacroAndServe, ServeOnly }
+    [HideInInspector] public VoiceCommandMode commandMode = VoiceCommandMode.Full;
+
     [SerializeField] private string openAIApiKey = "";
     [SerializeField] private CoffeeMakerManager coffeeMaker;
     [SerializeField] private GrillManager grill;
@@ -173,6 +179,10 @@ public class VoiceCommandController : MonoBehaviour
 
     private void OnTranscription(string transcription)
     {
+        bool canMachine  = commandMode == VoiceCommandMode.Full || commandMode == VoiceCommandMode.MacroAndServe;
+        bool canAssemble = commandMode == VoiceCommandMode.Full;
+
+        // --- Serve (always available when voice is active) ---
         if (Contains(transcription, "serve") && Contains(transcription, "customer"))
         {
             string food = "";
@@ -192,74 +202,23 @@ public class VoiceCommandController : MonoBehaviour
             }
         }
 
-        if (Contains(transcription, "pour coffee"))
+        // --- Machine triggers (Full + MacroAndServe) ---
+        if (canMachine && Contains(transcription, "pour coffee"))
         {
             coffeeMaker.PourCoffeeIntoLastCup();
             ShowFeedback("Pouring coffee");
         }
-        else if (Contains(transcription, "grab cup") || Contains(transcription, "get cup"))
+        else if (canMachine && (Contains(transcription, "grab cup") || Contains(transcription, "get cup")))
         {
             coffeeMaker.SpawnCup();
             ShowFeedback("Grabbing cup");
         }
-        else if (Contains(transcription, "coffee"))
+        else if (canMachine && Contains(transcription, "coffee"))
         {
             coffeeMaker.TurnOnCoffeeMaker();
             ShowFeedback("Starting coffee machine");
         }
-        else if (Contains(transcription, "add patty") || Contains(transcription, "patty done") || Contains(transcription, "take patty"))
-        {
-            if (grill.TransferPattyToBurger(burgerAssembly))
-                ShowFeedback("Adding patty to burger");
-            else
-                ShowFeedback("No patty on grill");
-        }
-        else if (Contains(transcription, "place patty") || Contains(transcription, "put patty"))
-        {
-            grill.PlacePattyOnGrill();
-            ShowFeedback("Placing patty on grill");
-        }
-        else if (Contains(transcription, "grill"))
-        {
-            grill.StartCooking();
-            ShowFeedback("Starting grill");
-        }
-        else if (Contains(transcription, "bottom bun") || Contains(transcription, "place bun") || Contains(transcription, "start burger"))
-        {
-            burgerAssembly.PlaceBottomBun();
-            ShowFeedback("Placing bottom bun");
-        }
-        else if (Contains(transcription, "top bun") || Contains(transcription, "finish burger"))
-        {
-            burgerAssembly.AddTopBun();
-            ShowFeedback("Adding top bun");
-        }
-        else if (Contains(transcription, "cheese"))
-        {
-            burgerAssembly.AddCheese();
-            ShowFeedback("Adding cheese");
-        }
-        else if (Contains(transcription, "tomato"))
-        {
-            burgerAssembly.AddTomato();
-            ShowFeedback("Adding tomato");
-        }
-        else if (Contains(transcription, "onion"))
-        {
-            burgerAssembly.AddOnion();
-            ShowFeedback("Adding onion");
-        }
-        else if (Contains(transcription, "lettuce") || Contains(transcription, "salad"))
-        {
-            burgerAssembly.AddSalad();
-            ShowFeedback("Adding lettuce");
-        }
-        else if (Contains(transcription, "bacon"))
-        {
-            burgerAssembly.AddBacon();
-            ShowFeedback("Adding bacon");
-        }
-        else if (Contains(transcription, "bake pizza") || Contains(transcription, "put pizza in oven") || Contains(transcription, "pizza in oven"))
+        else if (canMachine && (Contains(transcription, "bake pizza") || Contains(transcription, "put pizza in oven") || Contains(transcription, "pizza in oven")))
         {
             GameObject pizza = pizzaAssembly.HandOffActivePizza();
             if (pizza != null)
@@ -272,44 +231,98 @@ public class VoiceCommandController : MonoBehaviour
                 ShowFeedback("No pizza to put in oven");
             }
         }
-        else if (Contains(transcription, "oven"))
+        else if (canMachine && Contains(transcription, "grill"))
+        {
+            grill.StartCooking();
+            ShowFeedback("Starting grill");
+        }
+        else if (canMachine && Contains(transcription, "oven"))
         {
             oven.StartCooking();
             ShowFeedback("Starting oven");
         }
-        else if (Contains(transcription, "place pizza") || Contains(transcription, "set pizza"))
+
+        // --- Assembly (Full only) ---
+        else if (canAssemble && (Contains(transcription, "add patty") || Contains(transcription, "patty done") || Contains(transcription, "take patty")))
+        {
+            if (grill.TransferPattyToBurger(burgerAssembly))
+                ShowFeedback("Adding patty to burger");
+            else
+                ShowFeedback("No patty on grill");
+        }
+        else if (canAssemble && (Contains(transcription, "place patty") || Contains(transcription, "put patty")))
+        {
+            grill.PlacePattyOnGrill();
+            ShowFeedback("Placing patty on grill");
+        }
+        else if (canAssemble && (Contains(transcription, "bottom bun") || Contains(transcription, "place bun") || Contains(transcription, "start burger")))
+        {
+            burgerAssembly.PlaceBottomBun();
+            ShowFeedback("Placing bottom bun");
+        }
+        else if (canAssemble && (Contains(transcription, "top bun") || Contains(transcription, "finish burger")))
+        {
+            burgerAssembly.AddTopBun();
+            ShowFeedback("Adding top bun");
+        }
+        else if (canAssemble && Contains(transcription, "cheese"))
+        {
+            burgerAssembly.AddCheese();
+            ShowFeedback("Adding cheese");
+        }
+        else if (canAssemble && Contains(transcription, "tomato"))
+        {
+            burgerAssembly.AddTomato();
+            ShowFeedback("Adding tomato");
+        }
+        else if (canAssemble && Contains(transcription, "onion"))
+        {
+            burgerAssembly.AddOnion();
+            ShowFeedback("Adding onion");
+        }
+        else if (canAssemble && (Contains(transcription, "lettuce") || Contains(transcription, "salad")))
+        {
+            burgerAssembly.AddSalad();
+            ShowFeedback("Adding lettuce");
+        }
+        else if (canAssemble && Contains(transcription, "bacon"))
+        {
+            burgerAssembly.AddBacon();
+            ShowFeedback("Adding bacon");
+        }
+        else if (canAssemble && (Contains(transcription, "place pizza") || Contains(transcription, "set pizza")))
         {
             pizzaAssembly.PlacePizza();
             ShowFeedback("Placing pizza");
         }
-        else if (Contains(transcription, "pepperoni"))
+        else if (canAssemble && Contains(transcription, "pepperoni"))
         {
             pizzaAssembly.AddPepperoni();
             ShowFeedback("Adding pepperoni");
         }
-        else if (Contains(transcription, "mushroom"))
+        else if (canAssemble && Contains(transcription, "mushroom"))
         {
             pizzaAssembly.AddMushroom();
             ShowFeedback("Adding mushrooms");
         }
-        else if (Contains(transcription, "olive"))
+        else if (canAssemble && Contains(transcription, "olive"))
         {
             pizzaAssembly.AddOlive();
             ShowFeedback("Adding olives");
         }
-        else if (Contains(transcription, "pepper"))
+        else if (canAssemble && Contains(transcription, "pepper"))
         {
             pizzaAssembly.AddPepper();
             ShowFeedback("Adding peppers");
         }
-        else if (Contains(transcription, "basil"))
+        else if (canAssemble && Contains(transcription, "basil"))
         {
             pizzaAssembly.AddBasil();
             ShowFeedback("Adding basil");
         }
         else
         {
-            Debug.Log($"[Voice] No command matched: {transcription}");
+            Debug.Log($"[Voice] No command matched (mode: {commandMode}): {transcription}");
         }
     }
 
