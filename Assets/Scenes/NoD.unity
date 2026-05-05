@@ -371,6 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e12daebeb0d6e6b4597fb95c42439346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startSceneName: StartScene
 --- !u!114 &141015528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1204,6 +1205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63a460962b6be4ad19c9e804c8f97f70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  commandMode: 0
   openAIApiKey: 
   coffeeMaker: {fileID: 1927606813}
   grill: {fileID: 1350746389}
@@ -4972,6 +4974,8 @@ MonoBehaviour:
   leftHandSynthetic: {fileID: 1811639776}
   rightHandSynthetic: {fileID: 1811639774}
   voiceCommandController: {fileID: 629190826}
+  grillButton: {fileID: 0}
+  ovenButton: {fileID: 0}
   playerLocomotion: {fileID: 1998285232}
 --- !u!1001 &2001697546
 PrefabInstance:

@@ -20,6 +20,11 @@ public class ModeManager : MonoBehaviour
     [Header("Voice")]
     [SerializeField] private VoiceCommandController voiceCommandController;
 
+    // --- Machine buttons (disabled in Hands+Voice so voice handles them) ---
+    [Header("Machine Buttons")]
+    [SerializeField] private GrillButton grillButton;
+    [SerializeField] private OvenButton ovenButton;
+
     // --- Locomotion (thumbstick) ---
     [Header("Locomotion")]
     [SerializeField] private PlayerLocomotion playerLocomotion;
@@ -32,28 +37,67 @@ public class ModeManager : MonoBehaviour
 
     private void ApplyMode(SceneManagement.InputMode mode)
     {
-        bool useControllers = mode == SceneManagement.InputMode.Controller || mode == SceneManagement.InputMode.Test;
-        bool useHands       = mode == SceneManagement.InputMode.Hands      || mode == SceneManagement.InputMode.Test;
-        bool useVoice       = mode == SceneManagement.InputMode.Voice       || mode == SceneManagement.InputMode.Test;
+        bool useControllers = mode == SceneManagement.InputMode.Controller
+                           || mode == SceneManagement.InputMode.ControllersAndVoice
+                           || mode == SceneManagement.InputMode.Test;
 
+        bool useHands       = mode == SceneManagement.InputMode.Hands
+                           || mode == SceneManagement.InputMode.HandsAndVoice
+                           || mode == SceneManagement.InputMode.Test;
+
+        bool useVoice       = mode == SceneManagement.InputMode.Voice
+                           || mode == SceneManagement.InputMode.ControllersAndVoice
+                           || mode == SceneManagement.InputMode.HandsAndVoice
+                           || mode == SceneManagement.InputMode.Test;
+
+        // --- Input devices ---
         SetActive(ovrControllers, useControllers);
 
         SetActive(ovrHands, useHands);
-        SetActive(leftHandGrabUseSynthetic,   useHands);
-        SetActive(rightHandGrabUseSynthetic,  useHands);
-        SetActive(leftHandTouchGrabSynthetic, useHands);
-        SetActive(rightHandTouchGrabSynthetic,useHands);
-        SetActive(leftHandSynthetic,          useHands);
-        SetActive(rightHandSynthetic,         useHands);
+        SetActive(leftHandGrabUseSynthetic,    useHands);
+        SetActive(rightHandGrabUseSynthetic,   useHands);
+        SetActive(leftHandTouchGrabSynthetic,  useHands);
+        SetActive(rightHandTouchGrabSynthetic, useHands);
+        SetActive(leftHandSynthetic,           useHands);
+        SetActive(rightHandSynthetic,          useHands);
 
+        // --- Voice command scope ---
         if (voiceCommandController != null)
+        {
             voiceCommandController.enabled = useVoice;
+            if (useVoice)
+            {
+                voiceCommandController.commandMode = mode switch
+                {
+                    SceneManagement.InputMode.ControllersAndVoice => VoiceCommandController.VoiceCommandMode.ServeOnly,
+                    SceneManagement.InputMode.HandsAndVoice       => VoiceCommandController.VoiceCommandMode.MacroAndServe,
+                    _                                             => VoiceCommandController.VoiceCommandMode.Full
+                };
+            }
+        }
 
-        // Locomotion only active for controller and test modes
+        // --- Physical serving ---
+        // Disabled for multimodal modes — voice is the only serve path there
+        CustomerTrayManager.PhysicalServingEnabled =
+            mode == SceneManagement.InputMode.Controller ||
+            mode == SceneManagement.InputMode.Hands      ||
+            mode == SceneManagement.InputMode.Test;
+
+        // --- Machine buttons ---
+        // Disabled for Hands+Voice — voice handles grill/oven triggers in that mode
+        bool useMachineButtons = mode != SceneManagement.InputMode.HandsAndVoice;
+        if (grillButton != null) grillButton.enabled = useMachineButtons;
+        if (ovenButton  != null) ovenButton.enabled  = useMachineButtons;
+
+        // --- Locomotion ---
+        bool useLocomotion = mode == SceneManagement.InputMode.Controller
+                          || mode == SceneManagement.InputMode.ControllersAndVoice
+                          || mode == SceneManagement.InputMode.Test;
         if (playerLocomotion != null)
-            playerLocomotion.enabled = useControllers && !useVoice || mode == SceneManagement.InputMode.Test;
+            playerLocomotion.enabled = useLocomotion;
 
-        Debug.Log($"[ModeManager] Mode: {mode} — Controllers:{useControllers} Hands:{useHands} Voice:{useVoice}");
+        Debug.Log($"[ModeManager] Mode:{mode} Controllers:{useControllers} Hands:{useHands} Voice:{useVoice} " +
+                  $"PhysicalServe:{CustomerTrayManager.PhysicalServingEnabled} MachineButtons:{useMachineButtons} Locomotion:{useLocomotion}");
     }
 
     private static void SetActive(GameObject go, bool active)

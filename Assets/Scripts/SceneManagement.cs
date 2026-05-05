@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagement : MonoBehaviour
 {
-    public enum InputMode { Controller = 0, Hands = 1, Voice = 2, Test = 3 }
+    public enum InputMode { Controller = 0, Hands = 1, Voice = 2, Test = 3, ControllersAndVoice = 4, HandsAndVoice = 5 }
 
     [SerializeField] private TMP_Dropdown modeDropdown;
     [SerializeField] private string gameSceneName = "NoD";
@@ -17,7 +17,9 @@ public class SceneManagement : MonoBehaviour
             "Controller",
             "Hands",
             "Voice",
-            "Test (All)"
+            "Test (All)",
+            "Controllers + Voice",
+            "Hands + Voice"
         });
         modeDropdown.value = (int)InputMode.Test;
         modeDropdown.RefreshShownValue();

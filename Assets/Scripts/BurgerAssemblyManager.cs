@@ -149,16 +149,32 @@ public class BurgerAssemblyManager : MonoBehaviour
 
     public GameObject TakeCompletedBurger()
     {
-        if (activeBurger == null) return null;
-        ObjectManager om = activeBurger.GetComponent<ObjectManager>();
-        if (om == null || om.mode != 4)
+        // Check voice-assembled burger first
+        if (activeBurger != null)
         {
-            Debug.Log("[Voice] Burger not complete yet (needs top bun).");
-            return null;
+            ObjectManager om = activeBurger.GetComponent<ObjectManager>();
+            if (om != null && om.mode == 4)
+            {
+                GameObject burger = activeBurger;
+                activeBurger = null;
+                return burger;
+            }
         }
-        GameObject burger = activeBurger;
-        activeBurger = null;
-        return burger;
+
+        // Fall back: find any physically-assembled completed burger in the scene
+        foreach (ObjectManager om in FindObjectsOfType<ObjectManager>())
+        {
+            if (om.mode != 4 || !om.CompareTag("Ingredient_Base")) continue;
+            IngredientProperties ip = om.GetComponent<IngredientProperties>();
+            if (ip != null && ip.GetPrefabName() == "Burger Bread Down")
+            {
+                Debug.Log("[Voice] Found physically-assembled burger.");
+                return om.gameObject;
+            }
+        }
+
+        Debug.Log("[Voice] No completed burger found.");
+        return null;
     }
 
     public void AddCheese()  => AddTopping(cheeseEmptyPrefab,  "cheese");
