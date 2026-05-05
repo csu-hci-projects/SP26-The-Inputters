@@ -3,6 +3,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class VoiceCommandController : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class VoiceCommandController : MonoBehaviour
     [SerializeField] private PizzaAssemblyManager pizzaAssembly;
     [SerializeField] private BurgerAssemblyManager burgerAssembly;
     [SerializeField] private ServingStationManager servingStation;
+    [SerializeField] private FinishButtonScript finishButton;
     [SerializeField] private TextMeshProUGUI feedbackText;
 
     [Header("Help Panel")]
@@ -195,6 +197,18 @@ public class VoiceCommandController : MonoBehaviour
             return;
         }
 
+        // --- Finish (Voice-only / Full mode) ---
+        if (commandMode == VoiceCommandMode.Full &&
+            (Contains(transcription, "finish") || Contains(transcription, "end session") || Contains(transcription, "i'm done") || Contains(transcription, "im done")))
+        {
+            ShowFeedback("Ending session...");
+            if (finishButton != null)
+                finishButton.ExitApplication();
+            else
+                SceneManager.LoadScene("StartScene");
+            return;
+        }
+
         // --- Help (available in all voice modes) ---
         if (Contains(transcription, "help"))
         {
@@ -345,6 +359,46 @@ public class VoiceCommandController : MonoBehaviour
         {
             Debug.Log($"[Voice] No command matched (mode: {commandMode}): {transcription}");
         }
+    }
+
+    public void ShowIntroHelp()
+    {
+        if (helpPanel == null || helpPanelText == null) return;
+        if (_helpCoroutine != null) StopCoroutine(_helpCoroutine);
+        helpPanelText.text = GetIntroHelpText();
+        helpPanel.SetActive(true);
+        _helpVisible = true;
+        _helpCoroutine = StartCoroutine(AutoCloseHelp());
+    }
+
+    private string GetIntroHelpText()
+    {
+        bool canAssemble = commandMode == VoiceCommandMode.Full;
+        bool canMachine  = commandMode == VoiceCommandMode.Full || commandMode == VoiceCommandMode.MacroAndServe;
+
+        string header = "── VOICE COMMANDS ──\n\n";
+        string footer = "\n\nSay 'help coffee/burger/pizza' for details\nSay 'close' to dismiss";
+        string body   = "";
+
+        if (canAssemble)
+        {
+            body += "COFFEE: \"coffee\" · \"grab cup\" · \"pour coffee\"\n";
+            body += "BURGER: \"place patty\" · \"grill\" · \"add patty\"\n";
+            body += "         \"bottom/top bun\" · \"cheese\" · \"tomato\" ...\n";
+            body += "PIZZA:  \"place pizza\" · \"pepperoni\" · \"mushroom\" ...\n";
+            body += "         \"bake pizza\" · \"oven\"\n";
+            body += "END:    \"finish\" or \"end session\"\n";
+        }
+        else if (canMachine)
+        {
+            body += "COFFEE: \"coffee\" · \"grab cup\" · \"pour coffee\"\n";
+            body += "BURGER: \"grill\"\n";
+            body += "PIZZA:  \"oven\" · \"bake pizza\"\n";
+        }
+
+        body += "SERVE:  \"serve [food] to customer [1/2/3]\"";
+
+        return header + body + footer;
     }
 
     private void ShowHelp(string topic)

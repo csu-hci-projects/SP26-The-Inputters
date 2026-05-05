@@ -50,7 +50,7 @@ public class ServingStationManager : MonoBehaviour
             tmp.text = $"Customer {i + 1}";
             tmp.fontSize = 0.6f;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = new Color(0.1f, 0.13f, 0.25f);
+            tmp.color = Color.white;
             tmp.rectTransform.sizeDelta = new UnityEngine.Vector2(0.6f, 0.2f);
         }
     }
