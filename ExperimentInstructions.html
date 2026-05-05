@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VR Kitchen Experiment – Participant Instructions</title>
+<style>
+  @page { margin: 1in 1in 1in 1.4in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    line-height: 1.55;
+    background: #fff;
+    padding-left: 32px;
+  }
+
+  header {
+    border-bottom: 3px solid #2c5f8a;
+    padding-bottom: 14px;
+    margin-bottom: 28px;
+  }
+  header h1 {
+    font-size: 22pt;
+    color: #2c5f8a;
+    letter-spacing: 0.5px;
+  }
+  header p {
+    color: #555;
+    font-size: 10pt;
+    margin-top: 4px;
+  }
+
+  h2 {
+    font-size: 14pt;
+    color: #2c5f8a;
+    border-bottom: 1.5px solid #c8daea;
+    padding-bottom: 5px;
+    margin: 28px 0 12px;
+  }
+  h3 {
+    font-size: 11.5pt;
+    color: #1a3d5c;
+    margin: 18px 0 6px;
+  }
+
+  p { margin-bottom: 8px; }
+
+  ul, ol {
+    margin-left: 20px;
+    margin-bottom: 8px;
+  }
+  li { margin-bottom: 3px; }
+
+  /* Mode grid */
+  .mode-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 14px 0;
+  }
+  .mode-card {
+    border: 1.5px solid #c8daea;
+    border-radius: 6px;
+    padding: 12px 14px;
+    background: #f5f9fd;
+  }
+  .mode-card h4 {
+    font-size: 10.5pt;
+    color: #2c5f8a;
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .mode-card p {
+    font-size: 9.5pt;
+    color: #444;
+    margin: 0;
+  }
+  .mode-card .badge {
+    display: inline-block;
+    background: #2c5f8a;
+    color: #fff;
+    font-size: 7.5pt;
+    font-weight: 700;
+    border-radius: 3px;
+    padding: 1px 6px;
+    margin-bottom: 5px;
+    letter-spacing: 0.4px;
+  }
+  .badge.voice  { background: #27796b; }
+  .badge.ctrl   { background: #5a4e8a; }
+  .badge.hands  { background: #8a6f2c; }
+  .badge.test   { background: #888; }
+
+  /* Voice command tables */
+  .cmd-section {
+    margin-bottom: 24px;
+    page-break-inside: avoid;
+  }
+  .cmd-section h3 {
+    background: #2c5f8a;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px 4px 0 0;
+    margin: 0;
+    font-size: 11pt;
+  }
+  .cmd-block {
+    border: 1.5px solid #c8daea;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    overflow: hidden;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+  thead tr { background: #e8f0f8; }
+  th {
+    text-align: left;
+    padding: 6px 10px;
+    font-weight: 700;
+    color: #2c5f8a;
+    border-bottom: 1.5px solid #c8daea;
+  }
+  td {
+    padding: 5px 10px;
+    vertical-align: top;
+    border-bottom: 1px solid #e5eef5;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f9fbfd; }
+
+  code {
+    font-family: Consolas, monospace;
+    background: #eef4fb;
+    border: 1px solid #c8daea;
+    border-radius: 3px;
+    padding: 1px 5px;
+    font-size: 9pt;
+    color: #1a3d5c;
+  }
+
+  .note {
+    background: #fffbea;
+    border-left: 4px solid #e6b800;
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+    margin: 14px 0;
+    font-size: 9.5pt;
+    color: #4a3c00;
+  }
+
+  .tip {
+    background: #edfaf6;
+    border-left: 4px solid #27796b;
+    padding: 10px 14px;
+    border-radius: 0 4px 4px 0;
+    margin: 14px 0;
+    font-size: 9.5pt;
+    color: #0d3d30;
+  }
+
+  .step-list { counter-reset: steps; list-style: none; margin-left: 0; }
+  .step-list li {
+    counter-increment: steps;
+    padding-left: 32px;
+    position: relative;
+    margin-bottom: 8px;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #2c5f8a;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 9pt;
+    font-weight: 700;
+  }
+
+  .page-break { page-break-before: always; }
+  footer {
+    margin-top: 40px;
+    border-top: 1px solid #ddd;
+    padding-top: 8px;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>VR Kitchen Experiment</h1>
+  <p>Participant Instructions &amp; Mode Reference &nbsp;·&nbsp; The Inputters &nbsp;·&nbsp; Spring 2026</p>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ OVERVIEW -->
+<h2>Overview</h2>
+<p>
+  In this experiment you will work in a virtual reality kitchen to prepare and serve food orders
+  to customers. There are three food items: <strong>Coffee</strong>, <strong>Burger</strong>, and
+  <strong>Pizza</strong>. Each customer will be waiting for one of these items — prepare it
+  correctly and serve it before their timer runs out.
+</p>
+<p>
+  Depending on the <strong>input mode</strong> assigned to you, you will interact using physical
+  controllers, hand tracking, voice commands, or a combination of these.
+</p>
+
+<div class="note">
+  <strong>Note for experimenters:</strong> Select the participant's assigned mode from the dropdown
+  on the start screen before handing over the headset. The mode determines which input methods are
+  available in the kitchen.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ STARTING -->
+<h2>Starting the Experiment</h2>
+<ol class="step-list">
+  <li>Put on the VR headset and wait for the start screen to appear.</li>
+  <li>The experimenter will select the correct input mode from the dropdown menu.</li>
+  <li>Press <strong>Start</strong>. The kitchen scene will load.</li>
+  <li>
+    If your mode includes voice commands, a help panel will appear automatically summarising
+    the available commands. It will close after 15 seconds, or say <code>"close"</code> to
+    dismiss it early.
+  </li>
+  <li>Customers will appear at the serving counter. Prepare and serve their orders.</li>
+  <li>When finished, use the <strong>Finish</strong> button (or say <code>"finish"</code> in Voice-only mode) to end the session.</li>
+</ol>
+
+<!-- ═══════════════════════════════════════════════════════ MODES -->
+<h2>Input Modes</h2>
+
+<div class="mode-grid">
+  <div class="mode-card">
+    <span class="badge ctrl">CONTROLLERS</span>
+    <h4>Controller</h4>
+    <p>Full physical interaction using VR controllers. Grab, place, and interact with all kitchen objects manually. No voice.</p>
+  </div>
+  <div class="mode-card">
+    <span class="badge hands">HANDS</span>
+    <h4>Hands</h4>
+    <p>Full physical interaction using hand tracking. Pinch and grab objects naturally. No voice.</p>
+  </div>
+  <div class="mode-card">
+    <span class="badge voice">VOICE</span>
+    <h4>Voice Only</h4>
+    <p>All kitchen actions are performed entirely by voice command. Full command set available.</p>
+  </div>
+  <div class="mode-card">
+    <span class="badge ctrl">CONTROLLERS</span><span class="badge voice" style="margin-left:4px">VOICE</span>
+    <h4>Controllers + Voice</h4>
+    <p>Controllers handle all preparation. Voice is limited to serving customers only.</p>
+  </div>
+  <div class="mode-card">
+    <span class="badge hands">HANDS</span><span class="badge voice" style="margin-left:4px">VOICE</span>
+    <h4>Hands + Voice</h4>
+    <p>Hands handle food assembly. Voice controls machines (grill, oven, coffee maker) and serving.</p>
+  </div>
+  <div class="mode-card">
+    <span class="badge test">TEST</span>
+    <h4>Test (All)</h4>
+    <p>All input methods enabled simultaneously. Used for testing and calibration only.</p>
+  </div>
+</div>
+
+<div class="tip">
+  <strong>Tip:</strong> In any mode that includes voice, hold the <strong>A button</strong> on
+  the right controller while speaking, then release. The display will show
+  <em>"Listening…"</em> while recording and confirm the recognised command when successful.
+  Say <code>"help coffee"</code>, <code>"help burger"</code>, or <code>"help pizza"</code>
+  at any time for a quick in-game command reference.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ RECIPES -->
+<h2>Food Preparation Summary</h2>
+
+<h3>☕ Coffee</h3>
+<ol>
+  <li>Start the coffee maker (machine button or voice).</li>
+  <li>Get a cup (spawn button or voice).</li>
+  <li>Pour coffee into the cup (pour button or voice).</li>
+  <li>Serve the filled cup to the correct customer.</li>
+</ol>
+
+<h3>🍔 Burger</h3>
+<ol>
+  <li>Place a patty on the grill.</li>
+  <li>Turn on the grill and wait for the patty to cook.</li>
+  <li>Place the bottom bun on the assembly plate.</li>
+  <li>Transfer the cooked patty to the burger.</li>
+  <li>Add desired toppings (cheese, tomato, onion, lettuce, bacon).</li>
+  <li>Add the top bun to complete the burger.</li>
+  <li>Serve to the correct customer.</li>
+</ol>
+
+<h3>🍕 Pizza</h3>
+<ol>
+  <li>Place the pizza dough on the assembly board.</li>
+  <li>Add toppings (pepperoni, mushroom, olive, pepper, basil).</li>
+  <li>Put the pizza in the oven.</li>
+  <li>Turn on the oven and wait for it to cook.</li>
+  <li>Serve to the correct customer.</li>
+</ol>
+
+<div class="note">
+  <strong>Customers:</strong> Each customer displays their number above their head
+  (<em>Customer 1, 2, 3</em>). Match the food type to the right customer when serving —
+  serving the wrong food will not count.
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ VOICE COMMANDS -->
+<div class="page-break"></div>
+<h2>Voice Commands by Mode</h2>
+
+<!-- VOICE ONLY -->
+<div class="cmd-section">
+  <h3>Voice Only &nbsp;·&nbsp; Full Command Set</h3>
+  <div class="cmd-block">
+    <table>
+      <thead>
+        <tr><th style="width:30%">Say…</th><th style="width:35%">Also recognised as…</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">☕ Coffee</td></tr>
+        <tr><td><code>"coffee"</code></td><td></td><td>Start the coffee maker</td></tr>
+        <tr><td><code>"grab cup"</code></td><td><code>"get cup"</code></td><td>Spawn a cup</td></tr>
+        <tr><td><code>"pour coffee"</code></td><td></td><td>Fill the cup with coffee</td></tr>
+
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🍔 Burger</td></tr>
+        <tr><td><code>"place patty"</code></td><td><code>"put patty"</code> · <code>"place paddy"</code> · <code>"put paddy"</code></td><td>Place patty on grill</td></tr>
+        <tr><td><code>"grill"</code></td><td></td><td>Toggle grill on / off</td></tr>
+        <tr><td><code>"add patty"</code></td><td><code>"take patty"</code> · <code>"patty done"</code> · <code>"add paddy"</code> · <code>"take paddy"</code> · <code>"paddy done"</code></td><td>Transfer cooked patty to burger</td></tr>
+        <tr><td><code>"bottom bun"</code></td><td><code>"place bun"</code> · <code>"start burger"</code></td><td>Place bottom bun</td></tr>
+        <tr><td><code>"cheese"</code></td><td></td><td>Add cheese</td></tr>
+        <tr><td><code>"tomato"</code></td><td></td><td>Add tomato</td></tr>
+        <tr><td><code>"onion"</code></td><td></td><td>Add onion</td></tr>
+        <tr><td><code>"lettuce"</code></td><td><code>"salad"</code></td><td>Add lettuce</td></tr>
+        <tr><td><code>"bacon"</code></td><td></td><td>Add bacon</td></tr>
+        <tr><td><code>"top bun"</code></td><td><code>"finish burger"</code></td><td>Complete the burger</td></tr>
+
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🍕 Pizza</td></tr>
+        <tr><td><code>"place pizza"</code></td><td><code>"set pizza"</code></td><td>Place pizza dough</td></tr>
+        <tr><td><code>"pepperoni"</code></td><td></td><td>Add pepperoni</td></tr>
+        <tr><td><code>"mushroom"</code></td><td></td><td>Add mushrooms</td></tr>
+        <tr><td><code>"olive"</code></td><td></td><td>Add olives</td></tr>
+        <tr><td><code>"pepper"</code></td><td></td><td>Add peppers</td></tr>
+        <tr><td><code>"basil"</code></td><td></td><td>Add basil</td></tr>
+        <tr><td><code>"bake pizza"</code></td><td><code>"put pizza in oven"</code> · <code>"pizza in oven"</code></td><td>Load pizza into oven</td></tr>
+        <tr><td><code>"oven"</code></td><td></td><td>Start the oven</td></tr>
+
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🧑‍🍳 Serving</td></tr>
+        <tr><td><code>"serve coffee to customer 1"</code></td><td><code>"… customer one"</code></td><td rowspan="3">Serve the named food to that customer (1, 2, or 3)</td></tr>
+        <tr><td><code>"serve burger to customer 2"</code></td><td><code>"… customer two"</code></td></tr>
+        <tr><td><code>"serve pizza to customer 3"</code></td><td><code>"… customer three"</code></td></tr>
+
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">ℹ️ Help &amp; Navigation</td></tr>
+        <tr><td><code>"help coffee"</code></td><td><code>"help burger"</code> · <code>"help pizza"</code></td><td>Show in-game command panel for that food</td></tr>
+        <tr><td><code>"close"</code></td><td></td><td>Dismiss the help panel</td></tr>
+        <tr><td><code>"finish"</code></td><td><code>"end session"</code> · <code>"I'm done"</code></td><td>End the session and return to start screen</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- HANDS + VOICE -->
+<div class="cmd-section">
+  <h3>Hands + Voice &nbsp;·&nbsp; Machine Triggers &amp; Serving</h3>
+  <div class="cmd-block">
+    <table>
+      <thead>
+        <tr><th style="width:30%">Say…</th><th style="width:35%">Also recognised as…</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">☕ Coffee</td></tr>
+        <tr><td><code>"coffee"</code></td><td></td><td>Start the coffee maker</td></tr>
+        <tr><td><code>"grab cup"</code></td><td><code>"get cup"</code></td><td>Spawn a cup</td></tr>
+        <tr><td><code>"pour coffee"</code></td><td></td><td>Fill the cup with coffee</td></tr>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🍔 Burger</td></tr>
+        <tr><td><code>"grill"</code></td><td></td><td>Toggle grill on / off</td></tr>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🍕 Pizza</td></tr>
+        <tr><td><code>"oven"</code></td><td></td><td>Start the oven</td></tr>
+        <tr><td><code>"bake pizza"</code></td><td><code>"put pizza in oven"</code> · <code>"pizza in oven"</code></td><td>Load assembled pizza into oven</td></tr>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🧑‍🍳 Serving</td></tr>
+        <tr><td><code>"serve [food] to customer [1/2/3]"</code></td><td></td><td>Serve the named food to that customer</td></tr>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">ℹ️ Help</td></tr>
+        <tr><td><code>"help coffee / burger / pizza"</code></td><td></td><td>Show in-game command panel</td></tr>
+        <tr><td><code>"close"</code></td><td></td><td>Dismiss the help panel</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:8px;font-size:9pt;color:#555;">
+    All food preparation (patty placement, topping assembly, etc.) is done physically with your hands.
+    Voice only activates machines and serves completed dishes.
+  </p>
+</div>
+
+<!-- CONTROLLERS + VOICE -->
+<div class="cmd-section">
+  <h3>Controllers + Voice &nbsp;·&nbsp; Serving Only</h3>
+  <div class="cmd-block">
+    <table>
+      <thead>
+        <tr><th style="width:30%">Say…</th><th style="width:35%">Also recognised as…</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">🧑‍🍳 Serving</td></tr>
+        <tr><td><code>"serve coffee to customer 1"</code></td><td><code>"… customer one"</code></td><td rowspan="3">Serve the named food to that customer (1, 2, or 3)</td></tr>
+        <tr><td><code>"serve burger to customer 2"</code></td><td><code>"… customer two"</code></td></tr>
+        <tr><td><code>"serve pizza to customer 3"</code></td><td><code>"… customer three"</code></td></tr>
+        <tr><td colspan="3" style="background:#e8f0f8;font-weight:700;color:#2c5f8a;padding:5px 10px;">ℹ️ Help</td></tr>
+        <tr><td><code>"help coffee / burger / pizza"</code></td><td></td><td>Show in-game command panel</td></tr>
+        <tr><td><code>"close"</code></td><td></td><td>Dismiss the help panel</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:8px;font-size:9pt;color:#555;">
+    All food preparation and machine interaction is done physically with the controllers.
+    Voice is used only to serve completed dishes to customers.
+  </p>
+</div>
+
+<!-- PHYSICAL ONLY -->
+<div class="cmd-section">
+  <h3>Controller Only &amp; Hands Only &nbsp;·&nbsp; No Voice</h3>
+  <div class="cmd-block">
+    <table>
+      <thead><tr><th>Input</th><th>Action</th></tr></thead>
+      <tbody>
+        <tr><td>Grip / Pinch</td><td>Grab and release objects</td></tr>
+        <tr><td>Press machine buttons</td><td>Start coffee maker, grill, oven</td></tr>
+        <tr><td>Place food on assembly stations</td><td>Stack toppings, assemble burger/pizza</td></tr>
+        <tr><td>Carry completed dish to customer tray</td><td>Serve the customer physically</td></tr>
+        <tr><td>Press Finish button</td><td>End the session</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TIPS -->
+<h2>General Tips</h2>
+<ul>
+  <li>Each customer's number is displayed above their head to help with voice serving commands.</li>
+  <li>The grill and oven can burn food if left on too long — watch for visual and notification cues.</li>
+  <li>The trash can will destroy any object placed inside it.</li>
+  <li>If you forget a voice command, say <code>"help coffee"</code>, <code>"help burger"</code>,
+      or <code>"help pizza"</code> for a quick reminder panel.</li>
+  <li>Voice recognition works best with clear, calm speech at a normal pace.</li>
+  <li>"Patty" may occasionally be recognised as "paddy" — both are accepted.</li>
+</ul>
+
+<footer>
+  VR Kitchen Experiment &nbsp;·&nbsp; The Inputters &nbsp;·&nbsp; Spring 2026
+  &nbsp;·&nbsp; For experimenter use — not for distribution to participants before the session.
+</footer>
+
+</body>
+</html>
