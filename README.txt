@@ -1,5 +1,5 @@
 ================================================================================
-The Inputters -- Checkpoint 1
+The Inputters
 CS465 Human-Computer Interaction
 Colorado State University -- Spring 2026
 ================================================================================
