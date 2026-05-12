@@ -22,6 +22,21 @@ to standard controller-based interaction.
 --------------------------------------------------------------------------------
 LINKS
 --------------------------------------------------------------------------------
+GitHub Repository:
+  https://github.com/csu-hci-projects/SP26-The-Inputters
+
+Overleaf (LaTeX Document):
+  https://www.overleaf.com/project/69dd6333a947fa6ffeb9a4d2
+
+Project Overview:
+  https://www.youtube.com/watch?v=Myuxg4ezKyE
+
+Code Overview:
+  https://www.youtube.com/watch?v=AbhEBYYdb8s
+
+Final Presentation:
+  https://www.youtube.com/watch?v=NQ_p_MwY9WQ
+
 Checkpoint 2 Progress Video (YouTube, unlisted):
   https://youtu.be/DlDk21Y3G3A
 
@@ -31,8 +46,3 @@ Checkpoint 2 Prototype + Code Explanation Video (YouTube, unlisted):
 Checkpoint 1 Video (YouTube, unlisted):
   https://youtu.be/2F-WJ2OVuQc
 
-GitHub Repository:
-  https://github.com/csu-hci-projects/SP26-The-Inputters
-
-Overleaf (LaTeX Document):
-  https://www.overleaf.com/project/69dd6333a947fa6ffeb9a4d2
